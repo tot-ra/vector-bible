@@ -15,7 +15,7 @@ def scripture(handler):
     while True:
         # Query to select text from Chapter with LIMIT and OFFSET
         query = f'''
-        SELECT translationId || bookId || '-' || chapterNumber || '-' || Number AS id, ChapterVerse.text
+        SELECT ChapterVerse.text, translationId, bookId, chapterNumber, Number
         FROM ChapterVerse
         WHERE ChapterVerse.translationId = 'rus_syn'
         ORDER BY ChapterVerse.chapterNumber, ChapterVerse.number
@@ -31,7 +31,10 @@ def scripture(handler):
             break
 
         for row in rows:
-            handler(row[0], row[1])
+            id = f'{row[1]}_{row[2]}_{row[3]}_{row[4]}'
+            text = row[0]
+            meta = {'translationId': row[1], 'bookId': row[2], 'chapterNumber': row[3], 'verseNumber': row[4]}
+            handler(id, text, meta)
 
         # Increment the offset for the next batch
         offset += batch_size

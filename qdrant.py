@@ -19,20 +19,19 @@ if not client.collection_exists(collection_name):
         vectors_config=VectorParams(size=768, distance=Distance.DOT),
     )
 
-def qdrant_handler(id, text):
+def qdrant_handler(id, text, meta):
     embeddings = model.encode(text)
     md5_hash.update(id.encode('utf-8'))
     id = md5_hash.hexdigest()
 
     print(id)
     print(text)
-    print(embeddings)
 
     client.upsert(
         collection_name,
         wait=True,
         points=[
-            PointStruct(id=id, vector=embeddings, payload={"text":text}),
+            PointStruct(id=id, vector=embeddings, payload={"text":text, "meta":meta}),
         ],
     )
 
