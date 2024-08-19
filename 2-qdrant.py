@@ -60,7 +60,7 @@ def qdrant_search(text):
 
     print(search_result)
 
-def qdrant_search(text):
+def qdrant_filter_search(text):
     embeddings = model.encode(text)
     search_result = client.search(
         collection_name=collection_name,
@@ -74,13 +74,13 @@ def qdrant_search(text):
 
     print(search_result)
 
-start_time = time.perf_counter()
-
-read_verses(qdrant_inserts, minibatch_size=100)
-
-end_time = time.perf_counter()
-elapsed_time = end_time - start_time
-print(f"Insertion time: {elapsed_time} sec")
+# start_time = time.perf_counter()
+#
+# read_verses(qdrant_inserts, minibatch_size=100)
+#
+# end_time = time.perf_counter()
+# elapsed_time = end_time - start_time
+# print(f"Insertion time: {elapsed_time} sec")
 
 
 start_time = time.perf_counter()

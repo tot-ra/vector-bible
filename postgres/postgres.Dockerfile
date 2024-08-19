@@ -1,5 +1,5 @@
 # This is installing the pgvector extension for postgres
-FROM postgres:14.9
+FROM postgres:16.4
 
 RUN apt-get update && apt-get install -y locales \
     build-essential \
