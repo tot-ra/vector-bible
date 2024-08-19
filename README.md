@@ -1,4 +1,4 @@
-# Vector DBs comparison sandbox on a Biblical study
+# Vector DBs comparison sandbox on a Biblical multilingual 10M verses
 
 Goal of this repo is to compare different vector databases in terms of performance, load,
 ease of use and features.
@@ -26,7 +26,7 @@ docker-compose -f docker-compose.milvus.yml up
 docker-compose -f docker-compose.chromadb.yml up
 ```
 
-## Testing text data on 22955 verses from the Bible
+## Testing text data
 
 Basic test is to load bible text data in different languages and compare search performance
 
@@ -34,23 +34,27 @@ Basic test is to load bible text data in different languages and compare search 
 
 - Download SQLite data for bible in different languages
   https://bible.helloao.org/bible.db (8.4GB)
-- Spin up vector databases one by one
-- Create database/collection
+- Pre-Generate embeddings and store them in `ChapterVerse`. 
+Use multilingual embed model with **768 dim**.
+https://huggingface.co/sentence-transformers/paraphrase-multilingual-mpnet-base-v2
+- Spin up vector database you want to test
 
-#### Test cases
+```
+# Generate embeddings into SQLite
+# This will take a while
+# You can re-run it to continue from where it stopped
+python 1-generate-embeddings.py
 
-- Generate embeddings for each verse using multilingual embed model with 768 dim
-- Insert embeddings in batch of 100 [measure time]
-- Run search [measure time, accuracy]
-
+# Test Qdrant
+python 2-qdrant.py
+```
 
 #### Results
 Most of time is spent on embedding generation
-Statistics - 22955 verses in total
 
-| Engine |  Insert 23k, batch 100 | Search top 10 |
-|--------|-----------------------|---------------|
-| Qdrant |  786 sec (no wait)     | 0.169 sec     |
+| Engine | Details  | Insert batch 100  | Search top 10 |
+|--------|----------|-------------------|---------------|
+| Qdrant | Cosine,  | 786 sec (no wait) | 0.169 sec     |
 
 ### Environment
 
@@ -59,7 +63,7 @@ Statistics - 22955 verses in total
 - single-container dockerized vector databases
 
 ```
-python -m pip install 'qdrant-client[fastembed]'
+python -m pip install 'qdrant-client'
 
 # https://huggingface.co/sentence-transformers/paraphrase-multilingual-mpnet-base-v2
 pip install -U sentence-transformers
