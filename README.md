@@ -3,6 +3,9 @@
 Goal of this repo is to compare different vector databases in terms of performance, load,
 ease of use and features.
 
+<img width="800" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
+
+
 ## Candidates
 
 | Engine                                                                 | Ports      | UI                                           
