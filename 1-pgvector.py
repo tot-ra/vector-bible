@@ -36,7 +36,7 @@ def generate_embeddings():
             query = f'''
             SELECT text, translationId, bookId, chapterNumber, Number
             FROM store."ChapterVerse"
-            WHERE embedding IS NULL
+            WHERE embedding IS NULL AND translationId='rus_syn'
             ORDER BY chapterNumber, number
             LIMIT {batch_size} OFFSET {offset}
             '''

@@ -86,6 +86,57 @@ Issues faced:
 - faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
 operators were installed into public schema instead of `store`. 
 
+#### How to visualize embeddings
+You can use [cosmograph](https://cosmograph.app/run/)  online tool to visualize nodes and edges.
+
+Export nodes into CSV:
+```sql
+SELECT
+    CONCAT(translationid, '-', bookid,'-', chapternumber,'-',number) as id,
+    text as label
+FROM
+    store."ChapterVerse"
+WHERE
+    embedding IS NOT NULL AND
+    translationId='rus_syn' AND bookid IN ('JHN', 'LUK', 'MRK', 'MAT')
+LIMIT 10000;
+```
+
+Export edges into CSV:
+```sql
+SET search_path TO store;
+WITH pairwise_similarity AS (
+    SELECT
+        CONCAT(t1.translationid, '-', t1.bookid,'-', t1.chapternumber,'-',t1.number) AS source,
+        CONCAT(t2.translationid, '-', t2.bookid,'-', t2.chapternumber,'-',t2.number)  AS target,
+        (t1.embedding <=> t2.embedding) AS similarity
+    FROM
+        store."ChapterVerse" t1,
+        store."ChapterVerse" t2
+    WHERE
+        t1.bookid IN ('JHN', 'LUK', 'MRK', 'MAT') AND
+        t2.bookid IN ('JHN', 'LUK', 'MRK', 'MAT') AND
+        t1.translationId='rus_syn' AND
+        t2.translationId='rus_syn' AND
+        t1.embedding IS NOT NULL AND
+        t2.embedding IS NOT NULL AND
+        CONCAT(t1.translationid, '-', t1.bookid,'-', t1.chapternumber,'-',t1.number) != CONCAT(t2.translationid, '-', t2.bookid,'-', t2.chapternumber,'-',t2.number)
+)
+SELECT
+    source,
+    target,
+    similarity AS weight
+FROM
+    pairwise_similarity
+WHERE
+    similarity > 0.95
+ORDER BY
+    weight DESC
+LIMIT 10000;
+
+```
+
+
 ### 2. Qdrant
 ```
 docker-compose -f docker-compose.qdrant.yml up qdrant
