@@ -3,6 +3,13 @@
 Goal of this repo is to compare different vector databases in terms of performance, load,
 ease of use and features.
 
+
+
+https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
+
+
+
+
 ## Candidates
 
 | Engine                                                                 | Ports      | URLs                                                 
@@ -106,7 +113,7 @@ WITH pairwise_similarity AS (
     SELECT
         CONCAT(t1.translationid, '-', t1.bookid,'-', t1.chapternumber,'-',t1.number) AS source,
         CONCAT(t2.translationid, '-', t2.bookid,'-', t2.chapternumber,'-',t2.number)  AS target,
-        (t1.embedding <=> t2.embedding) AS similarity
+        1-(t1.embedding <=> t2.embedding) AS similarity
     FROM
         store."ChapterVerse" t1,
         store."ChapterVerse" t2
@@ -132,7 +139,6 @@ ORDER BY
 LIMIT 10000;
 
 ```
-<img width="600" alt="Screenshot 2024-08-20 at 01 51 21" src="https://github.com/user-attachments/assets/44d892b1-ed31-4ea9-a092-3703a6013fcc">
 
 
 ### 2. Qdrant
