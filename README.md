@@ -3,9 +3,6 @@
 Goal of this repo is to compare different vector databases in terms of performance, load,
 ease of use and features.
 
-<img width="800" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
-
-
 ## Candidates
 
 | Engine                                                                 | Ports      | URLs                                                 
@@ -135,6 +132,7 @@ ORDER BY
 LIMIT 10000;
 
 ```
+<img width="600" alt="Screenshot 2024-08-20 at 01 51 21" src="https://github.com/user-attachments/assets/44d892b1-ed31-4ea9-a092-3703a6013fcc">
 
 
 ### 2. Qdrant
@@ -147,11 +145,17 @@ python -m pip install 'qdrant-client'
 python 2-qdrant.py
 ```
 
+<img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
+
+
 ### 3. Milvus
 ```
 python -m pip install pymilvus
 docker-compose -f docker-compose.milvus.yml up
 ```
+
+<img width="600" alt="Screenshot 2024-08-20 at 01 54 28" src="https://github.com/user-attachments/assets/9034e2de-7c11-4cfe-a762-826d01251fff">
+
 
 ### Others
 ```bash
