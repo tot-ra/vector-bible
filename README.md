@@ -12,11 +12,26 @@ ease of use and features.
 |------------------------------------------------------------------------|------------|----------------------------------------------------|
 | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432       |
 | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6333       | [UI](http://localhost:6333/dashboard#/collections) |
-| [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 |
+| [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 | [UI](http://localhost:8000)
 | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051 |
 | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000       |
 | Redis                                                                  | 6379       |
 | Elastic                                                                |            |
+
+
+```mermaid
+flowchart LR
+    sqlite --"0 - import manually in IDE"--> postgres
+postgres --"text"--> 1-pgvector.py --"1 - generate embeddings"--> postgres[(postgres)]
+
+2-qdrant.py --"read embeddings"--> postgres
+2-qdrant.py --"write over grpc API"--> qdrant[(qdrant)]
+
+3-milvus.py --"write over grpc API"--> milvus[(milvus)]
+3-milvus.py --"read embeddings"--> postgres 
+
+atto[atto\nlocalhost:8000] --> milvus
+```
 
 ### Testing Environment
 
@@ -29,12 +44,21 @@ ease of use and features.
 
 Basic test is to load bible text data in different languages and compare search performance
 
-### Steps
+### Data preparation
 - Download SQLite data for bible in different languages
   https://bible.helloao.org/bible.db (8.4GB)
-- Pre-Generate embeddings and store them in `ChapterVerse`. 
+- Export `ChapterVerse` from SQLIte to Postgres for better performance. You will need some tool like IntelliJ DataGrip.
+You could use sqlite but it would be very slow. 
+- Add column `ChapterVerse.embedding` with `store.vector(768)` type
+- Create index in postgres for faster updates
+```
+  create index ChapterVerse_translationid_bookid_chapternumber_number_index
+    on store."ChapterVerse" (translationid, bookid, chapternumber, number);
+  ```
+- Pre-Generate embeddings and store them in same `ChapterVerse`. 
 Use multilingual embed model with **768 dim**.
 https://huggingface.co/sentence-transformers/paraphrase-multilingual-mpnet-base-v2
+
 - Spin up vector database you want to test
 
 ```
@@ -57,6 +81,11 @@ python -m pip install "psycopg[binary]"
 python 1-pgvector.py
 ```
 
+Issues faced:
+- could not install pgvector on Postgres 14 and 15
+- faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
+operators were installed into public schema instead of `store`. 
+
 ### 2. Qdrant
 ```
 docker-compose -f docker-compose.qdrant.yml up qdrant
@@ -67,10 +96,14 @@ python -m pip install 'qdrant-client'
 python 2-qdrant.py
 ```
 
+### 3. Milvus
+```
+python -m pip install pymilvus
+docker-compose -f docker-compose.milvus.yml up
+```
 
 ### Others
 ```bash
-docker-compose -f docker-compose.milvus.yml up
 docker-compose -f docker-compose.weaviate.yml up weaviate
 docker-compose -f docker-compose.chromadb.yml up
 ```

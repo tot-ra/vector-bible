@@ -1,7 +1,6 @@
 import sqlite3
 import struct
 
-import numpy as np
 import psycopg2
 from pgvector.psycopg2 import register_vector
 
@@ -17,55 +16,48 @@ conn_params = {
 
 # Connect to the PostgreSQL database
 postgres = psycopg2.connect(**conn_params)
-register_vector(postgres)
 cur = postgres.cursor()
+
+cur.execute("SET search_path TO store, public")
+register_vector(cur)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 
 
 # Function to fetch Bible text from the SQLite database and split it into sentences
-def copy_embeddings():
+def generate_embeddings():
     # Initialize variables
-    batch_size = 100
+    batch_size = 1000
     offset = 0
-
-    # Connect to the SQLite database
-    db_path = 'bible.db'
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
 
     try:
         while True:
             # Query to select text from Chapter with LIMIT and OFFSET
             query = f'''
-            SELECT embedding, text
-            FROM ChapterVerse
-            WHERE ChapterVerse.embedding IS NOT NULL
-            ORDER BY ChapterVerse.chapterNumber, ChapterVerse.number
+            SELECT text, translationId, bookId, chapterNumber, Number
+            FROM store."ChapterVerse"
+            WHERE embedding IS NULL
+            ORDER BY chapterNumber, number
             LIMIT {batch_size} OFFSET {offset}
             '''
 
             # Execute the query and fetch results
-            cursor.execute(query)
-            rows = cursor.fetchall()
+            cur.execute(query)
+            rows = cur.fetchall()
 
             # If no more rows are returned, break the loop
             if not rows:
                 break
 
             for row in rows:
-                # Define the SQL INSERT query
-                insert_query = """
-                INSERT INTO store.embeddings (embedding, text)
-                VALUES (%s, %s)
-                """
-
-                # Execute the INSERT query
-                embedding = row[0]
-                if isinstance(embedding, bytes):
-                    embedding = list(struct.unpack(f'{len(embedding) // 4}f', embedding))
-
-                cur.execute(insert_query, (embedding, row[1]))
+                text = row[0]
+                # print(text)
+                embeddings = model.encode(text)
+                cur.execute(f'''
+                    UPDATE store."ChapterVerse"
+                    SET embedding = %s
+                    WHERE translationId = %s AND bookId = %s AND chapterNumber = %s AND Number = %s
+                    ''', (embeddings, row[1], row[2], row[3], row[4]))
 
                 # Commit the transaction
                 postgres.commit()
@@ -78,27 +70,25 @@ def copy_embeddings():
         print(f"An error occurred: {e}")
 
     finally:
-        # Close the database connection
-        conn.close()
-
         # Close the cursor and connection
         if cur is not None:
             cur.close()
-        if conn is not None:
-            postgres.close()
+
+        # Close the database connection
+        postgres.close()
 
 def pgvector_search(text):
     embedding = model.encode(text)
 
-    cur.execute(f"""
-        SELECT text,  1 - (embedding <-> %s::vector) AS similarity
-        FROM store.embeddings
+    cur.execute(f'''
+        SELECT text,  1 - (embedding <=> %s::store.vector) AS similarity
+        FROM store."ChapterVerse"
         ORDER BY similarity desc
-        LIMIT 10
-    """, (embedding,))
+        LIMIT 10;
+    ''', (embedding,))
     for r in cur.fetchall():
         # print(r)
         print(f"Text: {r[0]}; Similarity: {r[1]}")
 
-copy_embeddings()
+generate_embeddings()
 pgvector_search("воскресил из мертвых")

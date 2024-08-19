@@ -8,6 +8,7 @@ from qdrant_client.models import Distance, VectorParams
 from qdrant_client.models import PointStruct
 from sentence_transformers import SentenceTransformer
 import hashlib
+md5_hash = hashlib.md5()
 
 from common import read_verses
 
@@ -15,7 +16,7 @@ model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet
 
 client = QdrantClient("0.0.0.0", grpc_port=6334, prefer_grpc=True)
 collection_name = "collection_768"
-md5_hash = hashlib.md5()
+
 
 if not client.collection_exists(collection_name):
     client.create_collection(
