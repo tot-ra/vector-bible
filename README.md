@@ -53,6 +53,8 @@ Was unable to install pgvector on Postgres 14 and 15, so used Postgres 16.4
 
 ```
 docker-compose -f docker-compose.pgvector.yml up postgres --build
+python -m pip install "psycopg[binary]"
+python 1-pgvector.py
 ```
 
 ### 2. Qdrant

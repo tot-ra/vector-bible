@@ -6,7 +6,7 @@ CREATE DATABASE store;
 
 CREATE SCHEMA IF NOT EXISTS store;
 
-SET search_path TO store;
+-- SET search_path TO store;
 
 -- Create the 'vector' extension within the 'store' database
 CREATE EXTENSION IF NOT EXISTS vector;
