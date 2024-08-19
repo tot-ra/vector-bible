@@ -1,14 +1,14 @@
 import sqlite3
 
 # Function to fetch Bible text from the SQLite database and split it into sentences
-def scripture(handler):
+def read_verses(handler, minibatch_size=100):
     db_path = 'bible.db'
     # Connect to the SQLite database
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
     # Initialize variables
-    batch_size = 100
+    batch_size = 1000
     offset = 0
     sentences = []
 
@@ -30,11 +30,16 @@ def scripture(handler):
         if not rows:
             break
 
+        preprocessedRows = []
         for row in rows:
             id = f'{row[1]}_{row[2]}_{row[3]}_{row[4]}'
             text = row[0]
             meta = {'translationId': row[1], 'bookId': row[2], 'chapterNumber': row[3], 'verseNumber': row[4]}
-            handler(id, text, meta)
+            preprocessedRows.append((id, text, meta))
+
+        for i in range(0, len(preprocessedRows), minibatch_size):
+            chunk = preprocessedRows[i:i + minibatch_size]
+            handler(chunk)
 
         # Increment the offset for the next batch
         offset += batch_size
