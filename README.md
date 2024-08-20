@@ -17,20 +17,6 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 | Redis                                                                  | 6379       |
 | Elastic                                                                |            |
 
-```mermaid
-flowchart LR
-    sqlite -- " 0 - import manually in IDE " - - > postgres 
-postgres - - " text " - - > 1- pgvector . py - - " 1 - generate embeddings " - - > postgres [( postgres )]
-
-2 - qdrant . py - -" read embeddings " - - > postgres
-2- qdrant . py - - " write over grpc API " - - > qdrant [( qdrant )]
-
-3 - milvus . py - -" write over grpc API " - - > milvus[( milvus )]
-3 - milvus .py - - " read embeddings " - - > postgres
-
-atto [ atto\nlocalhost:8000 ] --> milvus
-```
-
 ### Testing Environment
 
 - python 3.11
@@ -50,6 +36,11 @@ Basic test is to load bible text data in different languages and compare search 
 - Add column `ChapterVerse.embedding` with `store.vector(768)` type
 - Create index in postgres for faster updates
 
+```mermaid
+flowchart LR
+sqlite -- " 0 - import manually in IDE " --> postgres 
+postgres -- " text " --> 1-pgvector.py -- " 1 - generate embeddings " --> postgres[( postgres )]
+```
 ```
   create index ChapterVerse_translationid_bookid_chapternumber_number_index
     on store."ChapterVerse" (translationid, bookid, chapternumber, number);
@@ -149,6 +140,11 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 
 
 ### 2. Qdrant
+```mermaid
+flowchart LR
+2-qdrant.py -- " read embeddings " --> postgres
+2-qdrant.py -- " write over grpc API " --> qdrant[( qdrant )]
+```
 
 ```
 docker-compose -f docker-compose.qdrant.yml up qdrant
@@ -177,6 +173,13 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 ```
 
 ### 3. Milvus
+
+```mermaid
+flowchart LR
+3-milvus.py -- " write over grpc API " --> milvus[( milvus )]
+3-milvus.py -- " read embeddings " --> postgres
+atto["atto\nlocalhost:8000"] --> milvus
+```
 
 ```
 python -m pip install pymilvus
