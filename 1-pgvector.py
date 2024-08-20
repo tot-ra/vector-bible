@@ -1,6 +1,6 @@
 import sqlite3
 import struct
-
+import time
 import psycopg2
 from pgvector.psycopg2 import register_vector
 
@@ -36,10 +36,12 @@ def generate_embeddings():
             query = f'''
             SELECT text, translationId, bookId, chapterNumber, Number
             FROM store."ChapterVerse"
-            WHERE embedding IS NULL AND translationId='rus_syn'
+            WHERE embedding IS NULL
             ORDER BY chapterNumber, number
             LIMIT {batch_size} OFFSET {offset}
             '''
+
+            # AND translationId = 'rus_syn'
 
             # Execute the query and fetch results
             cur.execute(query)
@@ -83,6 +85,7 @@ def pgvector_search(text):
     cur.execute(f'''
         SELECT text,  1 - (embedding <=> %s::store.vector) AS similarity
         FROM store."ChapterVerse"
+        WHERE translationId = 'rus_syn' AND embedding IS NOT NULL
         ORDER BY similarity desc
         LIMIT 10;
     ''', (embedding,))
@@ -91,4 +94,9 @@ def pgvector_search(text):
         print(f"Text: {r[0]}; Similarity: {r[1]}")
 
 generate_embeddings()
+
+start_time = time.perf_counter()
 pgvector_search("воскресил из мертвых")
+end_time = time.perf_counter()
+elapsed_time = end_time - start_time
+print(f"Search time: {elapsed_time} sec")

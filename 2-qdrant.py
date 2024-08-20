@@ -59,7 +59,9 @@ def qdrant_search(text):
         limit=10,
     )
 
-    print(search_result)
+    # cycle through search results
+    for result in search_result:
+        print(f"Text: {result.payload['text']}; Similarity: {result.score}")
 
 def qdrant_filter_search(text):
     embeddings = model.encode(text)
@@ -75,14 +77,8 @@ def qdrant_filter_search(text):
 
     print(search_result)
 
-# start_time = time.perf_counter()
-#
-# read_verses(qdrant_inserts, minibatch_size=100)
-#
-# end_time = time.perf_counter()
-# elapsed_time = end_time - start_time
-# print(f"Insertion time: {elapsed_time} sec")
 
+read_verses(qdrant_inserts, minibatch_size=100)
 
 start_time = time.perf_counter()
 

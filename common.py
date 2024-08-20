@@ -1,35 +1,46 @@
 import sqlite3
 from sentence_transformers import SentenceTransformer
+import psycopg2
+from pgvector.psycopg2 import register_vector
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 
+conn_params = {
+    'dbname': 'store',
+    'user': 'postgres',
+    'password': 'postgres',
+    'host': 'localhost',
+    'port': '5432'
+}
+
 # Function to fetch Bible text from the SQLite database and split it into sentences
 def read_verses(handler, minibatch_size=100):
-    db_path = 'bible.db'
-    # Connect to the SQLite database
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+    # Connect to the PostgreSQL database
+    postgres = psycopg2.connect(**conn_params)
+    cur = postgres.cursor()
+
+    cur.execute("SET search_path TO store, public")
+    register_vector(cur)
 
     # Initialize variables
     batch_size = 1000
     offset = 0
     sentences = []
 
+
     while True:
         # Query to select text from Chapter with LIMIT and OFFSET
         query = f'''
-        SELECT ChapterVerse.text, translationId, bookId, chapterNumber, Number, embedding
-        FROM ChapterVerse
-        WHERE embedding IS NOT NULL
-        ORDER BY ChapterVerse.chapterNumber, ChapterVerse.number
+        SELECT text, translationId, bookId, chapterNumber, Number, embedding
+        FROM store."ChapterVerse"
+        WHERE embedding IS NOT NULL AND translationId='rus_syn'
+        ORDER BY chapterNumber, number
         LIMIT {batch_size} OFFSET {offset}
         '''
 
-        # ChapterVerse.translationId = 'rus_syn' AND
-
         # Execute the query and fetch results
-        cursor.execute(query)
-        rows = cursor.fetchall()
+        cur.execute(query)
+        rows = cur.fetchall()
 
         # If no more rows are returned, break the loop
         if not rows:
@@ -51,6 +62,6 @@ def read_verses(handler, minibatch_size=100):
         offset += batch_size
 
     # Close the database connection
-    conn.close()
+    cur.close()
 
     return sentences
