@@ -5,17 +5,19 @@ ease of use and features.
 
 https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 
-## Candidates
+## Candidates & Results
 
-| Engine                                                                 | Ports      | URLs                                               
-|------------------------------------------------------------------------|------------|----------------------------------------------------|
-| Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432       |
-| [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6333       | [UI](http://localhost:6333/dashboard#/collections) |
-| [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 | [UI](http://localhost:8000)                        
-| [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051 |
-| [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000       |
-| Redis                                                                  | 6379       |
-| Elastic                                                                |            |
+Most of time is spent on embedding generation (days)
+
+| Nr | Engine                                                                 | Similarity search | Ports      | URLs                                               |                                               
+|----|------------------------------------------------------------------------|-------------------|------------|----------------------------------------------------|
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 0.216 sec         | 5432       |
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 0.140 sec         | 6333       | [UI](http://localhost:6333/dashboard#/collections) |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 2.718 sec         | 9091 19530 | [UI](http://localhost:8000)                        
+| 4  | Redis                                                                  |                   | 6379       |
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                |                   | 8080 50051 |
+| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                |                   | 8000       |
+| 7  | Elastic                                                                |                   |            |
 
 ### Testing Environment
 
@@ -208,12 +210,3 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
 docker-compose -f docker-compose.chromadb.yml up
 ```
 
-## Results
-
-Most of time is spent on embedding generation (days)
-
-
-| Test case                           | Postgres                                | Qdrant    | Milvus    |
-|-------------------------------------|-----------------------------------------|-----------|-----------|
-| Insert 24k                          | N/A (bundled with embedding generation) | 786 sec   |           |
-| Similarity search top 10 out of 24k | 0.216 sec                               | 0.140 sec | 2.718 sec |
