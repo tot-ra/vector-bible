@@ -12,8 +12,6 @@ md5_hash = hashlib.md5()
 
 from common import read_verses
 
-model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
-
 client = QdrantClient("0.0.0.0", grpc_port=6334, prefer_grpc=True)
 collection_name = "collection_768"
 
@@ -48,6 +46,8 @@ def qdrant_inserts(chunk):
 
 
 def qdrant_search(text):
+    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+
     embeddings = model.encode(text)
     search_result = client.search(
         collection_name=collection_name,
@@ -64,6 +64,8 @@ def qdrant_search(text):
         print(f"Text: {result.payload['text']}; Similarity: {result.score}")
 
 def qdrant_filter_search(text):
+    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+
     embeddings = model.encode(text)
     search_result = client.search(
         collection_name=collection_name,

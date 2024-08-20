@@ -132,45 +132,6 @@ ORDER BY weight DESC LIMIT 10000;
 
 ```
 
-### 2. Qdrant
-
-```
-docker-compose -f docker-compose.qdrant.yml up qdrant
-
-python -m pip install 'qdrant-client'
-
-# Test Qdrant
-python 2-qdrant.py
-```
-
-<img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
-
-### 3. Milvus
-
-```
-python -m pip install pymilvus
-docker-compose -f docker-compose.milvus.yml up
-```
-
-<img width="600" alt="Screenshot 2024-08-20 at 01 54 28" src="https://github.com/user-attachments/assets/9034e2de-7c11-4cfe-a762-826d01251fff">
-
-### Others
-
-```bash
-docker-compose -f docker-compose.weaviate.yml up weaviate
-docker-compose -f docker-compose.chromadb.yml up
-```
-
-## Results
-
-Most of time is spent on embedding generation (days)
-
-
-| Test case                           | Postgres                                | Qdrant    | Milvus |
-|-------------------------------------|-----------------------------------------|-----------|--------|
-| Insert 25k                          | N/A (bundled with embedding generation) | 786 sec   |        |
-| Similarity search top 10 out of 25k | 0.216 sec                               | 0.140 sec |        |
-
 
 Postgres similarity results
 ```
@@ -186,6 +147,21 @@ Text: и гробы отверзлись; и многие тела усопши�
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701932003219
 ```
 
+
+### 2. Qdrant
+
+```
+docker-compose -f docker-compose.qdrant.yml up qdrant
+
+python -m pip install 'qdrant-client'
+
+# Test Qdrant
+python 2-qdrant.py
+```
+
+<img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
+
+
 Qdrant similarity results
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
@@ -199,3 +175,42 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248916625977
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162703514099121
 ```
+
+### 3. Milvus
+
+```
+python -m pip install pymilvus
+docker-compose -f docker-compose.milvus.yml up
+```
+
+<img width="600" alt="Screenshot 2024-08-20 at 01 54 28" src="https://github.com/user-attachments/assets/9034e2de-7c11-4cfe-a762-826d01251fff">
+
+```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.7362406253814697
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 1.216253399848938
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 1.3372809886932373
+Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 1.4702727794647217
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 1.538124680519104
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 1.6495163440704346
+Text: Но Бог воскресил Его из мертвых.; Similarity: 1.6659044027328491
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 1.8069703578948975
+Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 1.81114661693573
+Text: Или кто сойдет в бездну? То есть Христа из мертвых возвести.; Similarity: 1.8135876655578613
+```
+
+### Others
+
+```bash
+docker-compose -f docker-compose.weaviate.yml up weaviate
+docker-compose -f docker-compose.chromadb.yml up
+```
+
+## Results
+
+Most of time is spent on embedding generation (days)
+
+
+| Test case                           | Postgres                                | Qdrant    | Milvus    |
+|-------------------------------------|-----------------------------------------|-----------|-----------|
+| Insert 24k                          | N/A (bundled with embedding generation) | 786 sec   |           |
+| Similarity search top 10 out of 24k | 0.216 sec                               | 0.140 sec | 2.718 sec |
