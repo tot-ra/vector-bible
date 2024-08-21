@@ -115,28 +115,3 @@ redis_search("воскресил из мертвых", index_name)
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
 print(f"Search time: {elapsed_time} sec")
-
-
-
-#
-# query = (
-#     Query("(*)=>[KNN 3 @vector $query_vector AS vector_score]")
-#     .sort_by("vector_score")
-#     .return_fields("vector_score", "id", "brand", "model", "description")
-#     .dialect(2)
-# )
-#
-# table = create_query_table(query, queries, encoded_queries)
-# print(table)
-# # >>> | Best Mountain bikes for kids     |    0.54 | bikes:003...
-#
-# hybrid_query = (
-#     Query("(@brand:Peaknetic)=>[KNN 3 @vector $query_vector AS vector_score]")
-#     .sort_by("vector_score")
-#     .return_fields("vector_score", "id", "brand", "model", "description")
-#     .dialect(2)
-# )
-# table = create_query_table(hybrid_query, queries, encoded_queries)
-# print(table)
-# # >>> | Best Mountain bikes for kids     |    0.3  | bikes:008...
-#
