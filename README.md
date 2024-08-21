@@ -12,13 +12,16 @@ Note that insertion also includes md5 hash generation.
 
 | Nr | Engine                                                                 | Ports                                                     | Insert speed<br>(avg on 1k batch) | Similarity search <br />on 21k dataset | Similarity search      | Ease of integration 🤯 |
 |----|------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------|----------------------------------------|------------------------|------------------------|
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | N/A                               | 🟢 0.145 sec                           | --                     | ★★☆☆☆                  |               
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec                      | 🟡2.418 sec                            | 2.525 sec on 760k rows | ★★★★☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec                      | 🟡 2.657 sec                           | 4.216 sec on 814k rows | ★★★☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec                      | 🟡 2.643 sec                           | --                     | ★★☆☆☆                  | 
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                |                                   |                                        | --                     |                        |
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | N/A                               | 🔴 0.145 sec                           | --                     | ★★☆☆☆                  |               
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec                      | 🟢 0.008 sec                           | 2.525 sec on 760k rows | ★★★★☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec                      | 🔴 0.234 sec                           | 4.216 sec on 814k rows | ★★★☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec                      | 🟡 0.044 sec                           | --                     | ★★☆☆☆                  | 
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                | 🟡 0.411 sec                      | 🟢 0.006 sec                           | --                     |                        |
 | 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      |                                   |                                        | --                     |                        |
 | 7  | Elastic                                                                |                                                           |                                   |                                        | --                     |                        |
+
+I don't take into account cloud-only solutions like 
+[Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
 
 ### Testing Environment
 
@@ -274,6 +277,7 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
 - 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
 - 🟡 custom license
+- 🟡 docs are confusing
 - ❌ Redis failed to ingest all rows (maybe I did some misconfiguration?).
   `redis.exceptions.BusyLoadingError: Redis is loading the dataset in memory` random error while loading dataset at 336K rows and 8.6GB of memory;
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
@@ -306,6 +310,34 @@ Text: и гробы отверзлись; и многие тела усопши�
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.82
 ```
 
+</details>
+
+
+
+### 5. Weaviate
+```bash
+docker-compose -f docker-compose.weaviate.yml up weaviate
+```
+
+- ✅ Lots of docs, Multitenancy, Replication
+- 🟡 But Docs are confusing, emphasize cloud or older client versions
+- 🟡 Has no UI
+- `Failed to send 20 objects in a batch of 20. Please inspect client.batch.failed_objects or collection.batch.failed_objects for the failed objects`
+
+<details>
+<summary>Weaviate similarity results on 21k dataset</summary>
+```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226889610290527
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796802520752
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707684278488159
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.862721860408783
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.8626049160957336
+Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.8371100425720215
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.8319416046142578
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566666603088
+Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248320579529
+Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162702322006226
+```
 </details>
 
 ### Others

@@ -78,10 +78,7 @@ def milvus_inserts(chunk):
     return elapsed_time
 
 
-def milvus_search(text):
-    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
-
-    embeddings = model.encode(text)
+def milvus_search(embeddings):
     search_result = client.search(
         collection_name=collection_name,
         data=[embeddings],
@@ -100,13 +97,17 @@ def milvus_search(text):
 
 read_verses(milvus_inserts, max_items=24000, minibatch_size=1000)
 
+model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+
+embeddings = model.encode("воскресил из мертвых")
+
 start_time = time.perf_counter()
 
-milvus_search("воскресил из мертвых")
-milvus_search("воскресил из мертвых")
-milvus_search("воскресил из мертвых")
-milvus_search("воскресил из мертвых")
-milvus_search("воскресил из мертвых")
+milvus_search(embeddings)
+milvus_search(embeddings)
+milvus_search(embeddings)
+milvus_search(embeddings)
+milvus_search(embeddings)
 
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time

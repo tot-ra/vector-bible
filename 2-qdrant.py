@@ -46,10 +46,7 @@ def qdrant_inserts(chunk):
 
     return elapsed_time
 
-def qdrant_search(text):
-    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
-
-    embeddings = model.encode(text)
+def qdrant_search(embeddings):
     search_result = client.search(
         collection_name=collection_name,
         query_vector=embeddings,
@@ -64,10 +61,7 @@ def qdrant_search(text):
     for result in search_result:
         print(f"Text: {result.payload['text']}; Similarity: {result.score}")
 
-def qdrant_filter_search(text):
-    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
-
-    embeddings = model.encode(text)
+def qdrant_filter_search(embeddings):
     search_result = client.search(
         collection_name=collection_name,
         query_vector=embeddings,
@@ -82,13 +76,16 @@ def qdrant_filter_search(text):
 
 read_verses(qdrant_inserts, max_items=24000, minibatch_size=1000)
 
+model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+embeddings = model.encode("воскресил из мертвых")
+
 start_time = time.perf_counter()
 
-qdrant_search("воскресил из мертвых")
-qdrant_search("воскресил из мертвых")
-qdrant_search("воскресил из мертвых")
-qdrant_search("воскресил из мертвых")
-qdrant_search("воскресил из мертвых")
+qdrant_search(embeddings)
+qdrant_search(embeddings)
+qdrant_search(embeddings)
+qdrant_search(embeddings)
+qdrant_search(embeddings)
 
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time

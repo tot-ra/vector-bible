@@ -68,11 +68,7 @@ def redis_inserts(chunk):
 
     return elapsed_time
 
-def redis_search(text, index_name):
-    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
-
-    embeddings = model.encode(text)
-
+def redis_search(embeddings, index_name):
     # query = (
     #     Query("(*)=>[KNN 10 @embedding $query_vector AS vector_score]")
     #     .sort_by("vector_score")
@@ -111,13 +107,16 @@ index_name = "idx:verse_vss12"
 redis_index(index_name)
 read_verses(redis_inserts, max_items=24000, minibatch_size=1000)
 
+model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+embeddings = model.encode("воскресил из мертвых")
+
 start_time = time.perf_counter()
 
-redis_search("воскресил из мертвых", index_name)
-redis_search("воскресил из мертвых", index_name)
-redis_search("воскресил из мертвых", index_name)
-redis_search("воскресил из мертвых", index_name)
-redis_search("воскресил из мертвых", index_name)
+redis_search(embeddings, index_name)
+redis_search(embeddings, index_name)
+redis_search(embeddings, index_name)
+redis_search(embeddings, index_name)
+redis_search(embeddings, index_name)
 
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time

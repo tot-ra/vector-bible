@@ -93,7 +93,7 @@ def pgvector_search(text):
         # print(r)
         print(f"Text: {r[0]}; Similarity: {r[1]}")
 
-# generate_embeddings()
+generate_embeddings()
 
 start_time = time.perf_counter()
 
