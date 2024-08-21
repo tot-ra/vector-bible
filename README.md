@@ -8,16 +8,17 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 ## Candidates & Results
 
 Most of time is spent on embedding generation (days)
+Note that insertion also includes md5 hash generation.
 
-| Nr | Engine                                                                 | Ports                                                | Similarity search <br />on 24k dataset | Insert speed <br /> of 760k rows, 1k batch                | Similarity search |
-|----|------------------------------------------------------------------------|------------------------------------------------------|----------------------------------------|-----------------------------------------------------------|-------------------|
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                 | 0.216 sec                              | N/A                                                       | --                |
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | [6333](http://localhost:6333/dashboard#/collections) | 0.140 sec                              | 1.92 sec / 1k rows<br />1465.79 sec total<br /> 760k rows | 2.525 sec on 760k |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)             | 2.718 sec                              | 1.91 sec / 1k rows<br />1562.134 sec total<br />814k rows | 4.216 sec on 814k |
-| 4  | Redis                                                                  | 6379                                                 |                                        |                                                           | --                |
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                           |                                        |                                                           | --                |
-| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                 |                                        |                                                           | --                |
-| 7  | Elastic                                                                |                                                      |                                        |                                                           | --                |
+| Nr | Engine                                                                 | Ports                                                | Similarity search <br />on 24k dataset | Insert speed <br />1k batch                | Similarity search      |
+|----|------------------------------------------------------------------------|------------------------------------------------------|----------------------------------------|-----------------------------------------------------------|------------------------|
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                 | 0.216 sec                              | N/A                                                       | --                     |
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | [6333](http://localhost:6333/dashboard#/collections) | 0.140 sec                              | 1.92 sec / 1k rows<br />1465.79 sec total<br /> 760k rows | 2.525 sec on 760k rows |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)             | 2.718 sec                              | 1.91 sec / 1k rows<br />1562.134 sec total<br />814k rows | 4.216 sec on 814k rows |
+| 4  | Redis                                                                  | 6379                                                 |                                        |                                                           | --                     |
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                           |                                        |                                                           | --                     |
+| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                 |                                        |                                                           | --                     |
+| 7  | Elastic                                                                |                                                      |                                        |                                                           | --                     |
 
 ### Testing Environment
 
