@@ -256,6 +256,9 @@ docker-compose -f docker-compose.redis.yml up
 Issues encountered
 - unknown command 'JSON.SET' while using redis image, had to switch to redis-stack
 
+<img width="600" alt="Screenshot 2024-08-21 at 16 19 02" src="https://github.com/user-attachments/assets/1c1c97c6-aba4-4282-bf06-f9e6dcdcd85e">
+
+
 ### Others
 
 ```bash
