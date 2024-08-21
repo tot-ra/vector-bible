@@ -67,20 +67,19 @@ python 0-generate-embeddings.py
 ```
 
 ### 1. Postgres + pgvector
+✅ Fast search
+✅ Data is stored in Postgres, so no need to sync data between databases
+🟡 Operators are not the most intuitive
+❌ could not install pgvector on Postgres 14 and 15, only version 16 worked
+❌ faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
+  operators were installed into public schema instead of `store`. Had to reset the image and set extension installation under `store` schema.
 
-Was unable to install pgvector on Postgres 14 and 15, so used Postgres 16.4
 
 ```
 docker-compose -f docker-compose.pgvector.yml up postgres --build
 python -m pip install "psycopg[binary]"
 python 1-pgvector.py
 ```
-
-Issues faced:
-
-- could not install pgvector on Postgres 14 and 15
-- faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
-  operators were installed into public schema instead of `store`.
 
 #### How to visualize embeddings
 
@@ -127,7 +126,8 @@ ORDER BY weight DESC LIMIT 10000;
 ```
 
 
-Postgres similarity results on 24k dataset
+<details>
+<summary>Postgres similarity results on 24k dataset</summary>
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226886199645554
 Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796943695277
@@ -140,9 +140,13 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248023128517
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701932003219
 ```
-
+</details>
 
 ### 2. Qdrant
+
+✅ very clear API and docs
+✅ fastest search
+
 ```mermaid
 flowchart LR
 2-qdrant.py -- " read embeddings " --> postgres
@@ -195,7 +199,10 @@ Text: и гробы отверзлись; и многие тела усопши�
 </details>
 
 ### 3. Milvus
-Milvus does not come with built-in UI, so we use `attu` for that.
+✅ Docs look impressive
+🟡 Milvus does not come with built-in UI, so we use `attu` for that.
+🟡 Has extra containers
+❌ Search was slow, even though it used an index (maybe I did something wrong?)
 
 ```mermaid
 flowchart LR
@@ -247,8 +254,19 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 </details>
 
 ### 4. Redis
-Default redis does not come with built-in UI, but there is `redis-insight` for that.
-As we use redis-stack, it also has insight UI bundled.
+Overall experience with Redis was ★★☆☆☆ (2/5).
+✅ Redis is very fast for insertion
+✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
+🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
+`redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
+🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
+🟡for some reason ingestion took in only 21k rows instead of 24k
+❌ Redis failed to ingest all rows (maybe I did some misconfiguration?).
+  `redis.exceptions.BusyLoadingError: Redis is loading the dataset in memory` random error while loading dataset at 336K rows and 8.6GB of memory;
+❌ Search was slow, even though it used an index
+❌ `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk` while deleting keys
+
+
 
 ```bash
 docker-compose -f docker-compose.redis.yml up
@@ -257,16 +275,12 @@ docker-compose -f docker-compose.redis.yml up
 Docs:
 https://redis-py.readthedocs.io/en/stable/examples/search_vector_similarity_examples.html
 
-Issues encountered
-- `unknown command 'JSON.SET'` while using redis image, had to switch to redis-stack
-- `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk` while deleting keys
-- `redis.exceptions.BusyLoadingError: Redis is loading the dataset in memory` random error while loading dataset at 336K rows and 8.6GB of memory;
-- `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search
-
 - <img width="600" alt="Screenshot 2024-08-21 at 16 19 02" src="https://github.com/user-attachments/assets/1c1c97c6-aba4-4282-bf06-f9e6dcdcd85e">
 
 <details>
 <summary>Redis similarity results on 21k dataset</summary>
+
+```
 Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.87
 Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.84
 Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.83
@@ -277,6 +291,8 @@ Text: ибо если мертвые не воскресают, то и Хрис
 Text: Царь Ирод, услышав об Иисусе, ибо имя Его стало гласно, говорил: это Иоанн Креститель воскрес из мертвых, и потому чудеса делаются им.; Similarity: 0.76
 Text: вдруг, во мгновение ока, при последней трубе; ибо вострубит, и мертвые воскреснут нетленными, а мы изменимся.; Similarity: 0.76
 Text: ныне примирил в теле Плоти Его, смертью Его, чтобы представить вас святыми и непорочными и неповинными пред Собою,; Similarity: 0.75
+```
+
 </details>
 
 ### Others
