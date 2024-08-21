@@ -79,9 +79,7 @@ def generate_embeddings():
         # Close the database connection
         postgres.close()
 
-def pgvector_search(text):
-    embedding = model.encode(text)
-
+def pgvector_search(embedding):
     cur.execute(f'''
         SELECT text,  1 - (embedding <=> %s::store.vector) AS similarity
         FROM store."ChapterVerse"
@@ -93,15 +91,17 @@ def pgvector_search(text):
         # print(r)
         print(f"Text: {r[0]}; Similarity: {r[1]}")
 
-generate_embeddings()
+# generate_embeddings()
+
+embedding = model.encode("воскресил из мертвых")
 
 start_time = time.perf_counter()
 
-pgvector_search("воскресил из мертвых")
-pgvector_search("воскресил из мертвых")
-pgvector_search("воскресил из мертвых")
-pgvector_search("воскресил из мертвых")
-pgvector_search("воскресил из мертвых")
+pgvector_search(embedding)
+pgvector_search(embedding)
+pgvector_search(embedding)
+pgvector_search(embedding)
+pgvector_search(embedding)
 
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
