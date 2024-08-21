@@ -95,8 +95,8 @@ def pgvector_search(text):
 
 generate_embeddings()
 
-start_time = time.perf_counter()
-pgvector_search("воскресил из мертвых")
-end_time = time.perf_counter()
-elapsed_time = end_time - start_time
-print(f"Search time: {elapsed_time} sec")
+# start_time = time.perf_counter()
+# pgvector_search("воскресил из мертвых")
+# end_time = time.perf_counter()
+# elapsed_time = end_time - start_time
+# print(f"Search time: {elapsed_time} sec")

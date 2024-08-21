@@ -34,15 +34,15 @@ def qdrant_inserts(chunk):
 
         points.append(PointStruct(id=id, vector=embedding, payload={"text":text, "meta":meta}))
 
-    start_time = time.perf_counter()
+    # start_time = time.perf_counter()
     client.upsert(
         collection_name,
         wait=False,
         points=points,
     )
-    end_time = time.perf_counter()
-    elapsed_time = end_time - start_time
-    print(f"batch insert: {elapsed_time} sec")
+    # end_time = time.perf_counter()
+    # elapsed_time = end_time - start_time
+    # print(f"batch insert: {elapsed_time} sec")
 
 
 def qdrant_search(text):
@@ -79,10 +79,9 @@ def qdrant_filter_search(text):
 
     print(search_result)
 
-
-read_verses(qdrant_inserts, minibatch_size=100)
-
 start_time = time.perf_counter()
+
+read_verses(qdrant_inserts, minibatch_size=1000)
 
 qdrant_search("воскресил из мертвых")
 

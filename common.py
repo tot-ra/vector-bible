@@ -27,13 +27,13 @@ def read_verses(handler, minibatch_size=100):
     offset = 0
     sentences = []
 
-
+    # AND translationId = 'rus_syn'
     while True:
         # Query to select text from Chapter with LIMIT and OFFSET
         query = f'''
         SELECT text, translationId, bookId, chapterNumber, Number, embedding
         FROM store."ChapterVerse"
-        WHERE embedding IS NOT NULL AND translationId='rus_syn'
+        WHERE embedding IS NOT NULL
         ORDER BY chapterNumber, number
         LIMIT {batch_size} OFFSET {offset}
         '''

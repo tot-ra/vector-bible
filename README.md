@@ -9,15 +9,15 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 
 Most of time is spent on embedding generation (days)
 
-| Nr | Engine                                                                 | Similarity search | Ports      | URLs                                               |                                               
-|----|------------------------------------------------------------------------|-------------------|------------|----------------------------------------------------|
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 0.216 sec         | 5432       |
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 0.140 sec         | 6333       | [UI](http://localhost:6333/dashboard#/collections) |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 2.718 sec         | 9091 19530 | [UI](http://localhost:8000)                        
-| 4  | Redis                                                                  |                   | 6379       |
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                |                   | 8080 50051 |
-| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                |                   | 8000       |
-| 7  | Elastic                                                                |                   |            |
+| Nr | Engine                                                                 | Ports                                                | Similarity search <br />on 24k dataset | Insert speed <br /> of 760k rows, 1k batch | Similarity search<br/> on 760k|
+|----|------------------------------------------------------------------------|------------------------------------------------------|----------------------------------------|--------------------------------------------|--|
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                 | 0.216 sec                              | N/A                                        | --|
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | [6333](http://localhost:6333/dashboard#/collections) | 0.140 sec                              | 1.92 sec / 1k rows<br />1465.79 sec total  | 2.525 sec |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)             | 2.718 sec                              |                                            |--|
+| 4  | Redis                                                                  | 6379                                                 |                                        |                                            | --|
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                           |                                        |                                            |--|
+| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                 |                                        |                                            |--|
+| 7  | Elastic                                                                |                                                      |                                        |                                            |--|
 
 ### Testing Environment
 
@@ -159,8 +159,9 @@ python 2-qdrant.py
 
 <img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
 
+<details>
+<summary>Qdrant similarity results on 24k dataset</summary>
 
-Qdrant similarity results
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
 Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717798590660095
@@ -173,6 +174,24 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248916625977
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162703514099121
 ```
+</details>
+
+<details>
+<summary>Qdrant similarity results on 760k dataset</summary>
+
+```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717798590660095
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707683682441711
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.8627219200134277
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.8626047968864441
+Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.8371099233627319
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.8319414258003235
+Text: যীশু খ্রীষ্টকে স্মরণ করো, যিনি মৃতলোক থেকে পুনরুত্থিত হয়েছেন এবং যিনি দাউদের বংশজাত। এই হল আমার সুসমাচার।; Similarity: 0.827512264251709
+Text: in der er gewirkt hat in dem Christus, indem er ihn aus den Toten auferweckte; (und er setzte ihn zu seiner Rechten in den himmlischen Örtern,; Similarity: 0.8242398500442505
+Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248916625977
+```
+</details>
 
 ### 3. Milvus
 
