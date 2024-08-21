@@ -10,15 +10,15 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 Most of time is spent on embedding generation (days)
 Note that insertion also includes md5 hash generation.
 
-| Nr | Engine                                                                 | Ports                                                     | Insert speed<br>(avg on 1k batch) | Similarity search <br />on 21k dataset | Similarity search      | Ease of integration 🤯 |
-|----|------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------|----------------------------------------|------------------------|------------------------|
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | N/A                               | 🟡 0.069 sec                           | --                     | ★★☆☆☆                  |               
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec                      | 🟢 0.008 sec                           | 2.525 sec on 760k rows | ★★★★☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec                      | 🔴 0.234 sec                           | 4.216 sec on 814k rows | ★★★☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec                      | 🟡 0.044 sec                           | --                     | ★★☆☆☆                  | 
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                | 🟡 0.411 sec                      | 🟢 0.006 sec                           | --                     |                        |
-| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      |                                   |                                        | --                     |                        |
-| 7  | Elastic                                                                |                                                           |                                   |                                        | --                     |                        |
+| Nr | Engine                                                                 | Ports                                                     | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search 1.4M rows       | Ease of integration 🤯 |
+|----|------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------|-----------------|------------------------|------------------------|
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | N/A                               | 🟡 0.069 sec    | 22.566 sec             | ★★☆☆☆                  |               
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec                      | 🟢 0.008 sec    | 2.525 sec on 760k rows | ★★★★☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec                      | 🔴 0.234 sec    | 4.216 sec on 814k rows | ★★★☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec                      | 🟡 0.044 sec    | --                     | ★★☆☆☆                  | 
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                | 🟡 0.411 sec                      | 🟢 0.006 sec    | --                     |                        |
+| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      |                                   |                 | --                     |                        |
+| 7  | Elastic                                                                |                                                           |                                   |                 | --                     |                        |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -100,6 +100,22 @@ Text: Ибо как смерть через человека, так через 
 Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566644099042
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248023128517
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701932003219
+```
+</details>
+
+<details>
+<summary>Postgres similarity results on 1M dataset</summary>
+```
+Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.942152166206366
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226886199645554
+Text: që në ndonjë mënyrë të mund t’ia arrij ringjalljes prej së vdekurish.; Similarity: 0.9156135526648216
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.9023653865460769
+Text: щоб таким чином якось досягти воскресіння з мертвих.; Similarity: 0.9002284663817843
+Text: si en alguna manera llegase a la resurrección de los muertos.; Similarity: 0.8967561370447131
+Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: 0.8730900101269639
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796943695277
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707684267530202
+Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.8700215089349997
 ```
 </details>
 

@@ -83,7 +83,7 @@ def pgvector_search(embedding):
     cur.execute(f'''
         SELECT text,  1 - (embedding <=> %s::store.vector) AS similarity
         FROM store."ChapterVerse"
-        WHERE translationId = 'rus_syn' AND embedding IS NOT NULL
+        WHERE embedding IS NOT NULL
         ORDER BY similarity desc
         LIMIT 10;
     ''', (embedding,))
