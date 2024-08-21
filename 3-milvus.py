@@ -92,9 +92,9 @@ def milvus_search(text):
         print(f"Text: {result['entity']['text']}; Similarity: {result['distance']}")
 
 
-# read_verses(milvus_inserts, minibatch_size=100)
-
 start_time = time.perf_counter()
+# read_verses(milvus_inserts, minibatch_size=1000)
+
 milvus_search("воскресил из мертвых")
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
