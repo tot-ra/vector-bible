@@ -67,11 +67,12 @@ python 0-generate-embeddings.py
 ```
 
 ### 1. Postgres + pgvector
-✅ Fast search
-✅ Data is stored in Postgres, so no need to sync data between databases
-🟡 Operators are not the most intuitive
-❌ could not install pgvector on Postgres 14 and 15, only version 16 worked
-❌ faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
+- ✅ Fast search
+- ✅ Data is stored in Postgres, so no need to sync data between databases
+- 🟡 Operators are not the most intuitive
+- 🟡 Limited activity / community
+- ❌ could not install pgvector on Postgres 14 and 15, only version 16 worked
+- ❌ faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
   operators were installed into public schema instead of `store`. Had to reset the image and set extension installation under `store` schema.
 
 
@@ -81,9 +82,29 @@ python -m pip install "psycopg[binary]"
 python 1-pgvector.py
 ```
 
+<details>
+<summary>Postgres similarity results on 24k dataset</summary>
+```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226886199645554
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796943695277
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707684267530202
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.86272182337587
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.8626047520415614
+Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.8371098014647679
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.8319413838804383
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566644099042
+Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248023128517
+Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701932003219
+```
+</details>
+
+
 #### How to visualize embeddings
 
 You can use [cosmograph](https://cosmograph.app/run/)  online tool to visualize nodes and edges.
+
+<details>
+<summary>Exporting data for visualization</summary>
 
 Export nodes into CSV:
 
@@ -124,28 +145,17 @@ WHERE similarity > 0.95
 ORDER BY weight DESC LIMIT 10000;
 
 ```
-
-
-<details>
-<summary>Postgres similarity results on 24k dataset</summary>
-```
-Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226886199645554
-Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796943695277
-Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707684267530202
-Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.86272182337587
-Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.8626047520415614
-Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.8371098014647679
-Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.8319413838804383
-Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566644099042
-Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248023128517
-Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701932003219
-```
 </details>
 
 ### 2. Qdrant
 
-✅ very clear API and docs
-✅ fastest search
+- ✅ very clear API and docs
+- ✅ fastest search
+- ✅ built-in index creation at collection setup
+- ✅ has no-wait
+- ✅ has built-in UI with a limited embedding visualization
+- ✅ good community & PR activity
+- 🟡 required entry to have `id`
 
 ```mermaid
 flowchart LR
@@ -199,10 +209,11 @@ Text: и гробы отверзлись; и многие тела усопши�
 </details>
 
 ### 3. Milvus
-✅ Docs look impressive
-🟡 Milvus does not come with built-in UI, so we use `attu` for that.
-🟡 Has extra containers
-❌ Search was slow, even though it used an index (maybe I did something wrong?)
+- ✅ Docs look impressive
+- ✅ good community & PR activity
+- 🟡 Milvus does not come with built-in UI, so we use `attu` for that.
+- 🟡 Has extra containers
+- ❌ Search was slow, even though it used an index (maybe I did something wrong?)
 
 ```mermaid
 flowchart LR
@@ -254,17 +265,17 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 </details>
 
 ### 4. Redis
-Overall experience with Redis was ★★☆☆☆ (2/5).
-✅ Redis is very fast for insertion
-✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
-🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
+- ✅ Redis is very fast for insertion
+- ✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
+- 🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
 `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
-🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
-🟡for some reason ingestion took in only 21k rows instead of 24k
-❌ Redis failed to ingest all rows (maybe I did some misconfiguration?).
+- 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
+- 🟡 for some reason ingestion took in only 21k rows instead of 24k
+- 🟡 custom license
+- ❌ Redis failed to ingest all rows (maybe I did some misconfiguration?).
   `redis.exceptions.BusyLoadingError: Redis is loading the dataset in memory` random error while loading dataset at 336K rows and 8.6GB of memory;
-❌ Search was slow, even though it used an index
-❌ `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk` while deleting keys
+- ❌ Search was slow, even though it used an index (maybe I did something wrong?)
+- ❌ `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk` while deleting keys
 
 
 
