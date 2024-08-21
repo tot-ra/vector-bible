@@ -14,7 +14,7 @@ conn_params = {
 }
 
 # Function to fetch Bible text from the SQLite database and split it into sentences
-def read_verses(handler, minibatch_size=100):
+def read_verses(handler, max_items = 24000, minibatch_size=100):
     # Connect to the PostgreSQL database
     postgres = psycopg2.connect(**conn_params)
     cur = postgres.cursor()
@@ -27,8 +27,11 @@ def read_verses(handler, minibatch_size=100):
     offset = 0
     sentences = []
 
+    elapsed_time = 0
+    calls = 0
+
     # AND translationId = 'rus_syn'
-    while True:
+    while offset < max_items:
         # Query to select text from Chapter with LIMIT and OFFSET
         query = f'''
         SELECT text, translationId, bookId, chapterNumber, Number, embedding
@@ -56,10 +59,13 @@ def read_verses(handler, minibatch_size=100):
 
         for i in range(0, len(preprocessedRows), minibatch_size):
             chunk = preprocessedRows[i:i + minibatch_size]
-            handler(chunk)
+            calls += 1
+            elapsed_time += handler(chunk)
 
         # Increment the offset for the next batch
         offset += batch_size
+
+    print(f"avg insert time: {elapsed_time/calls} sec")
 
     # Close the database connection
     cur.close()

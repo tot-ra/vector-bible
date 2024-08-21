@@ -69,7 +69,13 @@ def milvus_inserts(chunk):
             {"id": id, "vector": embedding, "text": text, "meta": meta}
         )
 
+    start_time = time.perf_counter()
     client.insert(collection_name=collection_name, data=data)
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    print(f"batch insert: {elapsed_time} sec")
+
+    return elapsed_time
 
 
 def milvus_search(text):
@@ -92,10 +98,16 @@ def milvus_search(text):
         print(f"Text: {result['entity']['text']}; Similarity: {result['distance']}")
 
 
+read_verses(milvus_inserts, max_items=24000, minibatch_size=1000)
+
 start_time = time.perf_counter()
-# read_verses(milvus_inserts, minibatch_size=1000)
 
 milvus_search("воскресил из мертвых")
+milvus_search("воскресил из мертвых")
+milvus_search("воскресил из мертвых")
+milvus_search("воскресил из мертвых")
+milvus_search("воскресил из мертвых")
+
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
-print(f"Search time: {elapsed_time} sec")
+print(f"Search time: {elapsed_time/5} sec")

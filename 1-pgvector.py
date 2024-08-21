@@ -93,10 +93,16 @@ def pgvector_search(text):
         # print(r)
         print(f"Text: {r[0]}; Similarity: {r[1]}")
 
-generate_embeddings()
+# generate_embeddings()
 
-# start_time = time.perf_counter()
-# pgvector_search("воскресил из мертвых")
-# end_time = time.perf_counter()
-# elapsed_time = end_time - start_time
-# print(f"Search time: {elapsed_time} sec")
+start_time = time.perf_counter()
+
+pgvector_search("воскресил из мертвых")
+pgvector_search("воскресил из мертвых")
+pgvector_search("воскресил из мертвых")
+pgvector_search("воскресил из мертвых")
+pgvector_search("воскресил из мертвых")
+
+end_time = time.perf_counter()
+elapsed_time = end_time - start_time
+print(f"Search time: {elapsed_time/5} sec")

@@ -34,16 +34,17 @@ def qdrant_inserts(chunk):
 
         points.append(PointStruct(id=id, vector=embedding, payload={"text":text, "meta":meta}))
 
-    # start_time = time.perf_counter()
+    start_time = time.perf_counter()
     client.upsert(
         collection_name,
         wait=False,
         points=points,
     )
-    # end_time = time.perf_counter()
-    # elapsed_time = end_time - start_time
-    # print(f"batch insert: {elapsed_time} sec")
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    print(f"batch insert: {elapsed_time} sec")
 
+    return elapsed_time
 
 def qdrant_search(text):
     model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
@@ -79,12 +80,16 @@ def qdrant_filter_search(text):
 
     print(search_result)
 
+read_verses(qdrant_inserts, max_items=24000, minibatch_size=1000)
+
 start_time = time.perf_counter()
 
-read_verses(qdrant_inserts, minibatch_size=1000)
-
+qdrant_search("воскресил из мертвых")
+qdrant_search("воскресил из мертвых")
+qdrant_search("воскресил из мертвых")
+qdrant_search("воскресил из мертвых")
 qdrant_search("воскресил из мертвых")
 
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
-print(f"Search time: {elapsed_time} sec")
+print(f"Search time: {elapsed_time/5} sec")

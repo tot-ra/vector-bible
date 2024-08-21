@@ -42,11 +42,9 @@ def redis_index(index_name):
         ),
     )
     definition = IndexDefinition(prefix=["verse:"], index_type=IndexType.JSON)
-    res = client.ft(index_name).create_index(fields=schema, definition=definition)
-    print(res)
+    client.ft(index_name).create_index(fields=schema, definition=definition)
 
 def redis_inserts(chunk):
-    start_time = time.perf_counter()
     pipeline = client.pipeline()
     for id, text, meta, embedding in chunk:
         md5_hash.update(id.encode('utf-8'))
@@ -59,13 +57,16 @@ def redis_inserts(chunk):
 
         pipeline.json().set(f"verse:{id}", "$", {
             "text": text,
-            # "meta": meta,
+            "meta": meta,
             "embedding": embedding,
         })
+    start_time = time.perf_counter()
     pipeline.execute()
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
     print(f"Insert time: {elapsed_time} sec")
+
+    return elapsed_time
 
 def redis_search(text, index_name):
     model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
@@ -106,12 +107,18 @@ def redis_search(text, index_name):
         print(f"Text: {doc.text}; Similarity: {vector_score}")
 
 
-index_name = "idx:verse_vss10"
+index_name = "idx:verse_vss12"
 redis_index(index_name)
-read_verses(redis_inserts, minibatch_size=1000)
+read_verses(redis_inserts, max_items=24000, minibatch_size=1000)
 
 start_time = time.perf_counter()
+
 redis_search("воскресил из мертвых", index_name)
+redis_search("воскресил из мертвых", index_name)
+redis_search("воскресил из мертвых", index_name)
+redis_search("воскресил из мертвых", index_name)
+redis_search("воскресил из мертвых", index_name)
+
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
-print(f"Search time: {elapsed_time} sec")
+print(f"Search time: {elapsed_time/5} sec")

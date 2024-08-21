@@ -10,21 +10,23 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 Most of time is spent on embedding generation (days)
 Note that insertion also includes md5 hash generation.
 
-| Nr | Engine                                                                 | Ports                                                     | Insert speed (1k batch) | Similarity search <br />on 24k dataset | Similarity search      | Ease of integration 🤯 |
-|----|------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------|----------------------------------------|------------------------|------------------------|
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | N/A                     | 0.216 sec                              | --                     | ★★☆☆☆                  |               
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                     | 6334 [6333](http://localhost:6333/dashboard#/collections) | 1.92 sec                | 0.140 sec                              | 2.525 sec on 760k rows | ★★★★☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                   | 9091 19530 [8000](http://localhost:8000)                  | 1.91 sec                | 2.718 sec                              | 4.216 sec on 814k rows | ★★★☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                     | 6379 [8001](http://localhost:8001/)                       | 0.380 sec +- 0.02 sec   | 3.219 sec                              | --                     | ★★☆☆☆                  | 
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                |                         |                                        | --                     |                        |
-| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      |                         |                                        | --                     |                        |
-| 7  | Elastic                                                                |                                                           |                         |                                        | --                     |                        |
+| Nr | Engine                                                                 | Ports                                                     | Insert speed<br>(avg on 1k batch) | Similarity search <br />on 21k dataset | Similarity search      | Ease of integration 🤯 |
+|----|------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------|----------------------------------------|------------------------|------------------------|
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | N/A                               | 🟢 0.145 sec                           | --                     | ★★☆☆☆                  |               
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec                      | 🟡2.418 sec                            | 2.525 sec on 760k rows | ★★★★☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec                      | 🟡 2.657 sec                           | 4.216 sec on 814k rows | ★★★☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec                      | 🟡 2.643 sec                           | --                     | ★★☆☆☆                  | 
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                |                                   |                                        | --                     |                        |
+| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      |                                   |                                        | --                     |                        |
+| 7  | Elastic                                                                |                                                           |                                   |                                        | --                     |                        |
 
 ### Testing Environment
 
 - python 3.11
 - local mac M3 32GB
-- single-container dockerized vector databases
+- docker with 4 CPU limit and 12.8GB RAM limit
+  - single-container dockerized vector databases
+  - While testing, only postgres container and vector DB containers were running to reduce potential CPU/io interference
 
 ## Testing text data
 
@@ -175,7 +177,7 @@ python 2-qdrant.py
 <img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
 
 <details>
-<summary>Qdrant similarity results on 24k dataset</summary>
+<summary>Qdrant similarity results on 21k dataset</summary>
 
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
@@ -211,6 +213,8 @@ Text: и гробы отверзлись; и многие тела усопши�
 ### 3. Milvus
 - ✅ Docs look impressive
 - ✅ good community & PR activity
+- 🟡 Has concept of "loading" and unloading a collection (from memory)
+- 🟡 Takes ~20 sec to start up (compared to others)
 - 🟡 Milvus does not come with built-in UI, so we use `attu` for that.
 - 🟡 Has extra containers
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
@@ -230,19 +234,19 @@ docker-compose -f docker-compose.milvus.yml up
 <img width="600" alt="Screenshot 2024-08-20 at 01 54 28" src="https://github.com/user-attachments/assets/9034e2de-7c11-4cfe-a762-826d01251fff">
 
 <details>
-<summary>Milvus similarity results on 24k dataset</summary>
+<summary>Milvus similarity results on 21k dataset</summary>
 
 ```
-Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.7362406253814697
-Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 1.216253399848938
-Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 1.3372809886932373
-Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 1.4702727794647217
-Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 1.538124680519104
-Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 1.6495163440704346
-Text: Но Бог воскресил Его из мертвых.; Similarity: 1.6659044027328491
-Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 1.8069703578948975
-Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 1.81114661693573
-Text: Или кто сойдет в бездну? То есть Христа из мертвых возвести.; Similarity: 1.8135876655578613
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717797994613647
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707685470581055
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.8627219796180725
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.8626042604446411
+Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.8371096253395081
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.831940770149231
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282568454742432
+Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248320579529
+Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701725959778
 ```
 </details>
 
@@ -265,12 +269,10 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 </details>
 
 ### 4. Redis
-- ✅ Redis is very fast for insertion
 - ✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
 - 🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
 `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
 - 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
-- 🟡 for some reason ingestion took in only 21k rows instead of 24k
 - 🟡 custom license
 - ❌ Redis failed to ingest all rows (maybe I did some misconfiguration?).
   `redis.exceptions.BusyLoadingError: Redis is loading the dataset in memory` random error while loading dataset at 336K rows and 8.6GB of memory;
@@ -292,16 +294,16 @@ https://redis-py.readthedocs.io/en/stable/examples/search_vector_similarity_exam
 <summary>Redis similarity results on 21k dataset</summary>
 
 ```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.92
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.87
 Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.87
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.86
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.86
 Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.84
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.83
 Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.83
+Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.82
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.82
-Text: Который предан за грехи наши и воскрес для оправдания нашего.; Similarity: 0.77
-Text: Ибо Христос для того и умер, и воскрес, и ожил, чтобы владычествовать и над мертвыми и над живыми.; Similarity: 0.76
-Text: ибо если мертвые не воскресают, то и Христос не воскрес.; Similarity: 0.76
-Text: Царь Ирод, услышав об Иисусе, ибо имя Его стало гласно, говорил: это Иоанн Креститель воскрес из мертвых, и потому чудеса делаются им.; Similarity: 0.76
-Text: вдруг, во мгновение ока, при последней трубе; ибо вострубит, и мертвые воскреснут нетленными, а мы изменимся.; Similarity: 0.76
-Text: ныне примирил в теле Плоти Его, смертью Его, чтобы представить вас святыми и непорочными и неповинными пред Собою,; Similarity: 0.75
 ```
 
 </details>
