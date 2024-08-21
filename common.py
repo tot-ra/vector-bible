@@ -33,7 +33,7 @@ def read_verses(handler, minibatch_size=100):
         query = f'''
         SELECT text, translationId, bookId, chapterNumber, Number, embedding
         FROM store."ChapterVerse"
-        WHERE embedding IS NOT NULL
+        WHERE embedding IS NOT NULL AND translationId = 'rus_syn'
         ORDER BY chapterNumber, number
         LIMIT {batch_size} OFFSET {offset}
         '''
