@@ -15,7 +15,7 @@ Note that insertion also includes md5 hash generation.
 | 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                 | 0.216 sec                              | N/A                                                       | --                     |
 | 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | [6333](http://localhost:6333/dashboard#/collections) | 0.140 sec                              | 1.92 sec / 1k rows<br />1465.79 sec total<br /> 760k rows | 2.525 sec on 760k rows |
 | 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)             | 2.718 sec                              | 1.91 sec / 1k rows<br />1562.134 sec total<br />814k rows | 4.216 sec on 814k rows |
-| 4  | Redis                                                                  | 6379                                                 |                                        |                                                           | --                     |
+| 4  | Redis                                                                  | 6379 [5540](http://localhost:5540/)                  |                                        |                                                           | --                     |
 | 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                           |                                        |                                                           | --                     |
 | 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                 |                                        |                                                           | --                     |
 | 7  | Elastic                                                                |                                                      |                                        |                                                           | --                     |
@@ -195,6 +195,7 @@ Text: и гробы отверзлись; и многие тела усопши�
 </details>
 
 ### 3. Milvus
+Milvus does not come with built-in UI, so we use `attu` for that.
 
 ```mermaid
 flowchart LR
@@ -203,7 +204,7 @@ flowchart LR
 atto["atto\nlocalhost:8000"] --> milvus
 ```
 
-```
+```bash
 python -m pip install pymilvus
 docker-compose -f docker-compose.milvus.yml up
 ```
@@ -244,6 +245,16 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 ```
 
 </details>
+
+### 4. Redis
+Redis does not come with built-in UI, so we use `redis-insight` for that.
+
+```bash
+docker-compose -f docker-compose.redis.yml up
+```
+
+Issues encountered
+- unknown command 'JSON.SET' while using redis image, had to switch to redis-stack
 
 ### Others
 

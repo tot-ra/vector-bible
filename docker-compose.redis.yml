@@ -1,7 +1,15 @@
 services:
   redis:
-    image: redis:7.4
+    image: redis/redis-stack:7.4.0-v0
     restart: always
     ports:
       - 6379:6379
-    command: redis-server --requirepass pass
+      - 8001:8001
+    environment:
+      - REDIS_PASSWORD=pass
+      - REDIS_ARGS=--requirepass pass
+#  redis-insight:
+#    image: redis/redisinsight:2.54.0
+#    restart: always
+#    ports:
+#      - 5540:5540
