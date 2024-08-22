@@ -12,13 +12,13 @@ Note that insertion also includes md5 hash generation.
 
 | Nr | Engine                                                                 | Ports                                                     | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search 1.4M rows       | Ease of integration 🤯 |
 |----|------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------|-----------------|------------------------|------------------------|
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | N/A                               | 🟡 0.069 sec    | 22.566 sec             | ★★☆☆☆                  |               
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec                      | 🟢 0.008 sec    | 2.525 sec on 760k rows | ★★★★☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec                      | 🔴 0.234 sec    | 4.216 sec on 814k rows | ★★★☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec                      | 🟡 0.044 sec    | --                     | ★★☆☆☆                  | 
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                | 🟡 0.411 sec                      | 🟢 0.006 sec    | --                     |                        |
-| 6  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      |                                   |                 | --                     |                        |
-| 7  | Elastic                                                                |                                                           |                                   |                 | --                     |                        |
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | --                                | 🟡 0.069 sec    | 22.566 sec             | ★★☆☆☆                  |               
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 2.525 sec on 760k rows | ★★★★☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 4.216 sec on 814k rows | ★★★☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                    | ★★☆☆☆                  | 
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | --                     | ★★★☆☆                  |
+| 6  | Elastic 8.15                                                           |                                                           |                                   |                 | --                     |                        |
+| 7  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      | 🔴 1.795 sec                      | 🟢 0.002 sec    | --                     | ★★★★☆                  |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -173,7 +173,7 @@ ORDER BY weight DESC LIMIT 10000;
 - ✅ very clear API and docs
 - ✅ fastest search
 - ✅ built-in index creation at collection setup
-- ✅ has no-wait
+- ✅ has no-wait / async indexing
 - ✅ has built-in UI with a limited embedding visualization
 - ✅ good community & PR activity
 - 🟡 required entry to have `id`
@@ -294,8 +294,10 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 - 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
 - 🟡 custom license
 - 🟡 docs are confusing
+- ❌ slow insert speed, gets worse as amount of data grows 1.3 sec -> 4 sec. Maybe it has to do with the way embeddings are passed?
 - ❌ Redis failed to ingest all rows (maybe I did some misconfiguration?).
   `redis.exceptions.BusyLoadingError: Redis is loading the dataset in memory` random error while loading dataset at 336K rows and 8.6GB of memory;
+- ❌ Second attempt - failed with `SERVER_CLOSED_CONNECTION_ERROR` in pipeline.execute(). UI cannot connect to server anymore even if it looks running
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
 - ❌ `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk` while deleting keys
 
@@ -335,10 +337,13 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 docker-compose -f docker-compose.weaviate.yml up weaviate
 ```
 
+- ✅ Fastest search
 - ✅ Lots of docs, Multitenancy, Replication
-- 🟡 But Docs are confusing, emphasize cloud or older client versions
-- 🟡 Has no UI
-- `Failed to send 20 objects in a batch of 20. Please inspect client.batch.failed_objects or collection.batch.failed_objects for the failed objects`
+- 🟡 But Docs are confusing, emphasize cloud or older client versions, emphasizes OpenAI embeddings and configs instead of custom ones
+- 🟡 Has no management UI
+- 🟡 API at times confusing - `Failed to send 20 objects in a batch of 20. Please inspect client.batch.failed_objects or collection.batch.failed_objects for the failed objects` instead of showing errors.
+  - Did not like `id` or `vector` in properties
+- ❌ slow insert speed gets worse as amount of data grows 0.4 sec -> 2.5 sec
 
 <details>
 <summary>Weaviate similarity results on 21k dataset</summary>
@@ -356,10 +361,36 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 ```
 </details>
 
-### Others
+
+### 6. Elastic
+- 🟡 Custom license
 
 ```bash
-docker-compose -f docker-compose.weaviate.yml up weaviate
+docker-compose -f docker-compose.elastic.yml up
+```
+
+### 7. ChromaDB
+- ✅ Very straightforward quickstart guide
+- ❌ `TypeError: Descriptors cannot be created directly in chromadb.telemetry.opentelemetry `, had to set `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python` env var
+- ❌ [No batching support](https://cookbook.chromadb.dev/strategies/batching/#creating-batches)
+
+```bash
 docker-compose -f docker-compose.chromadb.yml up
 ```
 
+<details>
+<summary>ChromaDB similarity results on 21k dataset</summary>
+
+```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226889610290527
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796206474304
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707686066627502
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.8627220392227173
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.8626042008399963
+Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.8371098637580872
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.8319410681724548
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282561898231506
+Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248320579529
+Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162698745727539
+```
+</details>

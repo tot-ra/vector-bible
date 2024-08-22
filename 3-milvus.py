@@ -95,7 +95,7 @@ def milvus_search(embeddings):
         print(f"Text: {result['entity']['text']}; Similarity: {result['distance']}")
 
 
-read_verses(milvus_inserts, max_items=24000, minibatch_size=1000)
+read_verses(milvus_inserts, max_items=1400000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 

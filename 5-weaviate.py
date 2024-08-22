@@ -83,7 +83,7 @@ def weaviate_search(text):
     for o in response.objects:
         print(f"Text: {o.properties['text']}; Similarity: {1-o.metadata.distance}")
 
-read_verses(weaviate_inserts, max_items=24000, minibatch_size=1000)
+read_verses(weaviate_inserts, max_items=1400000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")

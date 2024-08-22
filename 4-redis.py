@@ -104,8 +104,8 @@ def redis_search(embeddings, index_name):
 
 
 index_name = "idx:verse_vss12"
-redis_index(index_name)
-read_verses(redis_inserts, max_items=24000, minibatch_size=1000)
+# redis_index(index_name)
+read_verses(redis_inserts, max_items=1400000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")
