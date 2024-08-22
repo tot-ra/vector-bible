@@ -18,7 +18,7 @@ Note that insertion also includes md5 hash generation.
 | 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.388 sec @ 683k;  | ★★★☆☆                  |
 | 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M | ★★☆☆☆                  |               
 | 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                  | ★★☆☆☆                  | 
-| 6  | Elastic 8.15                                                           | [5601](http://localhost:5601/app/home#/) 9200         | 🔴 2.917 sec                      |                 | --                   | ★★☆☆☆                      |
+| 6  | Elastic 8.15                                                           | [5601](http://localhost:5601/app/home#/) 9200         | 🔴 2.917 sec                      |                 | --                   | ★★★☆☆                      |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -406,12 +406,15 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 ### 6. Elastic
 Use `elastic:adminadmin` as credentials to access http://localhost:9200/
 
-- ✅ Has kibana UI
+- ✅ Has very nice kibana UI, highlighting indexes and properties used
 - 🟡 Custom license, had to use `basic` for testing
 - ❌ Has strict security `fatal exception while booting Elasticsearch: cannot read configured PEM certificate_authorities`, had to disable SSL and other security checks
 ```bash
 docker-compose -f docker-compose.elastic.yml up
 ```
+
+<img width="1425" alt="Screenshot 2024-08-22 at 16 35 22" src="https://github.com/user-attachments/assets/ba32d6b8-2ac9-427f-964b-834b6231ada4">
+
 
 ### 7. ChromaDB
 - ✅ Very straightforward quickstart guide
