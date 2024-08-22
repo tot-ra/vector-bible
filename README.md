@@ -10,15 +10,15 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 Most of time is spent on embedding generation (days)
 Note that insertion also includes md5 hash generation.
 
-| Nr | Engine                                                                 | Ports                                                                           | UI | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1M rows      | Ease of integration 🤯 | Storage of 1.4M rows |
-|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------------------------------|-----------------|----------------------|------------------------|----------------------|
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟡 | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 🟡0.119 sec @ 920k   | ★★★★☆                  | 🟢 3.21 GB           |
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M   | ★★★☆☆                  | 🟢 8.41 GB           |
-| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟢 0.022 sec @ 1.4M  | ★★★★☆                  | 🟡 12.37 GB          |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.388 sec @ 683k;  | ★★★☆☆                  | 🔴 34.25 GB          |
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M | ★★☆☆☆                  | 🟡 11.2 GB           |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                  | ★★☆☆☆                  | N/A                  |
-| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🔴 2.917 sec                      | 🟢 0.008 sec    | --                   | ★★★☆☆                  | 🔴 17.2 GB           |
+| Nr | Engine                                                                 | Ports                                                                           | UI | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1M rows      | Ease of integration 🤯 | Storage                                  |
+|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------------------------------|-----------------|----------------------|------------------------|------------------------------------------|
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟡 | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 🟡0.119 sec @ 920k   | ★★★★☆                  | 🟢 3.21 GB @ 900k                        |
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M   | ★★★☆☆                  | 🟢 8.41 GB @ 1.4M                        |
+| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟢 0.022 sec @ 1.4M  | ★★★★☆                  | 🟡 12.37 GB @ 1.4M                       |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.388 sec @ 683k;  | ★★★☆☆                  | 🔴 34.25 GB                              |
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M | ★★☆☆☆                  | 🟡 11.2 GB = 1.4M embeddings + 8M others |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                  | ★★☆☆☆                  | N/A                                      |
+| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.372 sec @ 1.4M   | ★★★☆☆                  | 🔴 23.46 GB                              |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -430,6 +430,24 @@ Text: Ибо как смерть через человека, так через 
 Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.914495
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.91006994
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.9080174
+
+```
+</details>
+
+<details>
+<summary>Elastic similarity results on 1.4M dataset</summary>
+
+```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9605174
+Text: që në ndonjë mënyrë të mund t’ia arrij ringjalljes prej së vdekurish.; Similarity: 0.95751595
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.95071626
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.95071626
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.95071626
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.95071626
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.95071626
+Text: щоб таким чином якось досягти воскресіння з мертвих.; Similarity: 0.9491937
+Text: щоб таким чином якось досягти воскресіння з мертвих.; Similarity: 0.9491937
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.9359567
 
 ```
 </details>
