@@ -18,7 +18,7 @@ Note that insertion also includes md5 hash generation.
 | 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.388 sec @ 683k;  | ★★★☆☆                  |
 | 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M | ★★☆☆☆                  |               
 | 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                  | ★★☆☆☆                  | 
-| 6  | Elastic 8.15                                                           | [5601](http://localhost:5601/app/home#/) 9200         | 🔴 2.917 sec                      |                 | --                   | ★★☆☆☆                      |
+| 6  | Elastic 8.15                                                           | [5601](http://localhost:5601/app/home#/) 9200                                   | 🔴 2.917 sec                      | 🟢 0.008 sec    | --                   | ★★☆☆☆                      |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -404,14 +404,30 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 
 
 ### 6. Elastic
-Use `elastic:adminadmin` as credentials to access http://localhost:9200/
-
-- ✅ Has kibana UI
+- ✅ Has very nice kibana UI
 - 🟡 Custom license, had to use `basic` for testing
 - ❌ Has strict security `fatal exception while booting Elasticsearch: cannot read configured PEM certificate_authorities`, had to disable SSL and other security checks
 ```bash
 docker-compose -f docker-compose.elastic.yml up
 ```
+
+<details>
+<summary>Elastic similarity results on 21k dataset</summary>
+
+```
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.95788
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.9358952
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.9356406
+Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.93155193
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.9310014
+Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.9184923
+Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.91571283
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.914495
+Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.91006994
+Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.9080174
+
+```
+</details>
 
 ### 7. ChromaDB
 - ✅ Very straightforward quickstart guide

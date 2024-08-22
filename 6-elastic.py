@@ -26,16 +26,17 @@ def elastic_inserts(chunk):
 
 def elastic_search(embedding):
     results = es_client.search(index="verses", knn={
-        "field": "title_embedding",
+        "field": "embedding",
         "query_vector": embedding,
-        "k": 1,
+        "k": 10,
         "num_candidates": 10
     }, source_includes=["text"])
 
-    print(results['hits']['hits'])
+    for row in results['hits']['hits']:
+        print(f"Text: {row['_source']['text']}; Similarity: {row['_score']}")
 
 
-read_verses(elastic_inserts, max_items=24000, minibatch_size=1000)
+# read_verses(elastic_inserts, max_items=24000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")
