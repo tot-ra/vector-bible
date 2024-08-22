@@ -363,10 +363,10 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
 - ✅ Fastest search
 - ✅ Lots of docs, Multitenancy, Replication
 - 🟡 But Docs are confusing, emphasize cloud or older client versions, emphasizes OpenAI embeddings and configs instead of custom ones
-- 🟡 Has no management UI
 - 🟡 API at times confusing - `Failed to send 20 objects in a batch of 20. Please inspect client.batch.failed_objects or collection.batch.failed_objects for the failed objects` instead of showing errors.
   - Did not like `id` or `vector` in properties
 - ❌ slow insert speed gets worse as amount of data grows 0.4 sec -> 2.5 sec
+- ❌ Has no management UI, only API
 
 <img width="600" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
 
@@ -440,7 +440,8 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 - ❌ Because of column API, one-by-one insertion speed is very slow. Likely could be improved though if multiple columns are first changed.
 - ❌ `TypeError: Descriptors cannot be created directly in chromadb.telemetry.opentelemetry `, had to set `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python` env var
 - ❌ [No batching support](https://cookbook.chromadb.dev/strategies/batching/#creating-batches)
-- ❌ `chromadb.api.configuration.InvalidConfigurationError: batch_size must be less than or equal to sync_threshold` when trying to `client.get_or_create_collection` due to mismatching client and server versions 
+- ❌ `chromadb.api.configuration.InvalidConfigurationError: batch_size must be less than or equal to sync_threshold` when trying to `client.get_or_create_collection` due to mismatching client and server versions
+
 ```bash
 docker-compose -f docker-compose.chromadb.yml up
 ```
