@@ -367,6 +367,10 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
   - Did not like `id` or `vector` in properties
 - ❌ slow insert speed gets worse as amount of data grows 0.4 sec -> 2.5 sec
 
+Storage has per-property folders
+<img width="300" alt="Screenshot 2024-08-22 at 17 19 14" src="https://github.com/user-attachments/assets/6c64e4a2-50a4-4ec0-b1b2-1e7d216c7709">
+
+
 <img width="600" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
 
 <details>
