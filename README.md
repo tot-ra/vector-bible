@@ -21,7 +21,14 @@ Note that insertion also includes md5 hash generation.
 | 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                      | N/A                                      | ★★☆☆☆                  |
 
 I don't take into account cloud-only solutions like 
-[Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
+[Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/),  [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
+
+I did no have time/energy to also test:
+[Vespa](https://github.com/vespa-engine/vespa), 
+[LanceDB](https://github.com/lancedb/lancedb), 
+[Marqo](https://github.com/marqo-ai/marqo),
+[Clickhouse](https://github.com/ClickHouse/ClickHouse), 
+[Cassandra](https://github.com/apache/cassandra)
 
 ### Testing Approach
 Used: 
