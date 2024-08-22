@@ -74,7 +74,7 @@ def qdrant_filter_search(embeddings):
 
     print(search_result)
 
-# read_verses(qdrant_inserts, max_items=1400000, minibatch_size=1000)
+read_verses(qdrant_inserts, max_items=1400000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")

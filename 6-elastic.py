@@ -1,26 +1,53 @@
+import time
+
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
 
+from common import read_verses
+
 es_client = Elasticsearch(
-    "https://localhost:9200",
-    # ssl_assert_fingerprint='AA:BB:CC:3C:A4:99:12:A8:D6:41:B7:A6:52:ED:CA:2E:0E:64:E2:0E:A7:8F:AE:4C:57:0E:4B:A3:00:11:22:33',
-    basic_auth=("elastic", "passw0rd")
+    "http://localhost:9200",
+    basic_auth=("elastic", "adminadmin")
 )
 
+def elastic_inserts(chunk):
+    start_time = time.perf_counter()
+    for id, text, meta, embedding in chunk:
+        es_client.index(index="verses", document={
+            "text": text,
+            "meta": meta,
+            "embedding": embedding
+        })
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    print(f"batch insert: {elapsed_time} sec")
 
-# Search
+    return elapsed_time
+
 def elastic_search(embedding):
-    query_string = {
+    results = es_client.search(index="verses", knn={
         "field": "title_embedding",
         "query_vector": embedding,
         "k": 1,
         "num_candidates": 10
-    }
-    results = es_client.search(index="movies", knn=query_string, source_includes=["text"])
+    }, source_includes=["text"])
 
     print(results['hits']['hits'])
 
 
+read_verses(elastic_inserts, max_items=24000, minibatch_size=1000)
+
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")
+
+start_time = time.perf_counter()
+
 elastic_search(embeddings)
+elastic_search(embeddings)
+elastic_search(embeddings)
+elastic_search(embeddings)
+elastic_search(embeddings)
+
+end_time = time.perf_counter()
+elapsed_time = end_time - start_time
+print(f"Search time: {elapsed_time/5} sec")

@@ -30,13 +30,16 @@ def read_verses(handler, max_items = 24000, minibatch_size=100):
     elapsed_time = 0
     calls = 0
 
-    # AND translationId = 'rus_syn'
+
     while offset < max_items:
         # Query to select text from Chapter with LIMIT and OFFSET
+
+        # To have smaller dataset, add to WHERE part:
+        # AND translationId = 'rus_syn'
         query = f'''
         SELECT text, translationId, bookId, chapterNumber, Number, embedding
         FROM store."ChapterVerse"
-        WHERE embedding IS NOT NULL
+        WHERE embedding IS NOT NULL AND translationId = 'rus_syn'
         ORDER BY chapterNumber, number
         LIMIT {batch_size} OFFSET {offset}
         '''
