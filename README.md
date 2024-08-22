@@ -18,7 +18,7 @@ Note that insertion also includes md5 hash generation.
 | 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.388 sec @ 683k;  | ★★★☆☆                  |
 | 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M | ★★☆☆☆                  |               
 | 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                  | ★★☆☆☆                  | 
-| 6  | Elastic 8.15                                                           |                                                                                 |                                   |                 | --                   | ★★☆☆☆                      |
+| 6  | Elastic 8.15                                                           | [5601](http://localhost:5601/app/home#/) 9200         |                                   |                 | --                   | ★★☆☆☆                      |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -35,6 +35,7 @@ Used:
   - I did not use external (OpenAI) APIs for embeddings, but even so, multilingual model for embedding generation was very slow. Thats why I stored it in postgres to not do it in runtime while doing inserts
   - For 21k dataset, I used `WHERE translationId = 'rus_syn'` to filter out data from postgres that had embeddings. Goal is to see how engines perform initially
   - For 1.4M dataset I just used rows that had embeddings in postgres by that time. Goal is to test larger scales of data that engine may see in production and how it degrades
+- I tried to use Cosine similarity with HNSW
 
 ### Data preparation
 
@@ -73,10 +74,11 @@ python 0-generate-embeddings.py
 ```
 
 ### 1. Postgres + pgvector
-- ✅ Fast search
 - ✅ Data is stored in Postgres, so no need to sync data between databases
+- 🟡 Mediocre search on small dataset
 - 🟡 Operators are not the most intuitive
 - 🟡 Limited activity / community
+- ❌ Slowest search on large dataset
 - ❌ could not install pgvector on Postgres 14 and 15, only version 16 worked
 - ❌ faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
   operators were installed into public schema instead of `store`. Had to reset the image and set extension installation under `store` schema.
@@ -402,8 +404,11 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 
 
 ### 6. Elastic
-- 🟡 Custom license
-- ❌ `fatal exception while booting Elasticsearch: cannot read configured PEM certificate_authorities`
+Use `elastic:adminadmin` as credentials to access http://localhost:9200/
+
+- ✅ Has kibana UI
+- 🟡 Custom license, had to use `basic` for testing
+- ❌ Has strict security `fatal exception while booting Elasticsearch: cannot read configured PEM certificate_authorities`, had to disable SSL and other security checks
 ```bash
 docker-compose -f docker-compose.elastic.yml up
 ```
@@ -436,5 +441,21 @@ Text: Ибо как смерть через человека, так через 
 Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282561898231506
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248320579529
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162698745727539
+```
+</details>
+<details>
+<summary>ChromaDB similarity results on 1.4M dataset</summary>
+
+```
+Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421521425247192
+Text: që në ndonjë mënyrë të mund t’ia arrij ringjalljes prej së vdekurish.; Similarity: 0.9156137108802795
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.9023656249046326
+Text: щоб таким чином якось досягти воскресіння з мертвих.; Similarity: 0.9002282023429871
+Text: si en alguna manera llegase a la resurrección de los muertos.; Similarity: 0.8967559337615967
+Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: 0.8730899095535278
+Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796206474304
+Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.870021402835846
+Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.8691048622131348
+Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.8691048622131348
 ```
 </details>
