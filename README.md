@@ -208,11 +208,6 @@ python -m pip install 'qdrant-client'
 python 2-qdrant.py
 ```
 
-Storage has segments with UUIDs
-
-<img width="500" alt="Screenshot 2024-08-22 at 17 23 00" src="https://github.com/user-attachments/assets/53107e0c-9f72-4f9d-a0ce-8e23f5da997f">
-
-
 <img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
 
 <details>
@@ -372,11 +367,6 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
 - ❌ slow insert speed gets worse as amount of data grows 0.4 sec -> 2.5 sec
 - ❌ Has no management UI, only API
 
-Storage has per-property folders
-
-<img width="300" alt="Screenshot 2024-08-22 at 17 19 14" src="https://github.com/user-attachments/assets/6c64e4a2-50a4-4ec0-b1b2-1e7d216c7709">
-
-
 <img width="600" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
 
 <details>
@@ -450,9 +440,6 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 - ❌ `TypeError: Descriptors cannot be created directly in chromadb.telemetry.opentelemetry `, had to set `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python` env var
 - ❌ [No batching support](https://cookbook.chromadb.dev/strategies/batching/#creating-batches)
 - ❌ `chromadb.api.configuration.InvalidConfigurationError: batch_size must be less than or equal to sync_threshold` when trying to `client.get_or_create_collection` due to mismatching client and server versions
-
-Storage (For 1.4M dataset) looks like SQLite is used:
-<img width="819" alt="Screenshot 2024-08-22 at 17 14 24" src="https://github.com/user-attachments/assets/de991327-60bd-42fa-a96a-e73bab7758f2">
 
 ```bash
 docker-compose -f docker-compose.chromadb.yml up
