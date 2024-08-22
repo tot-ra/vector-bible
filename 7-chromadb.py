@@ -5,19 +5,27 @@ import hashlib
 import numpy as np
 from common import read_verses
 from sentence_transformers import SentenceTransformer
-
+from chromadb.config import DEFAULT_TENANT, DEFAULT_DATABASE, Settings
 md5_hash = hashlib.md5()
 
 # setup Chroma in-memory, for easy prototyping. Can add persistence easily!
-client = chromadb.Client(
-    settings=chromadb.Settings(
-    chroma_server_host='localhost', chroma_server_http_port=18000
-    ))
+client = chromadb.HttpClient(
+    host="localhost",
+    port=18000,
+    ssl=False,
+    headers=None,
+    settings=Settings(),
+    tenant=DEFAULT_TENANT,
+    database=DEFAULT_DATABASE
+)
 
 collection_name = "collection_768ru2"
 # Create collection. get_collection, get_or_create_collection, delete_collection also available!
-# collection = client.get_collection(name=collection_name)
-collection = client.get_or_create_collection(name=collection_name, metadata={"hnsw:space": "cosine"})
+collection = client.get_collection(name=collection_name)
+
+if collection is None:
+    collection = client.get_or_create_collection(name=collection_name, metadata={"hnsw:space": "cosine"})
+
 
 def chroma_inserts(chunk):
     start_time = time.perf_counter()
@@ -62,7 +70,7 @@ def chroma_filter_search(embeddings):
 
 
 
-read_verses(chroma_inserts, max_items=24000, minibatch_size=1000)
+# read_verses(chroma_inserts, max_items=24000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")

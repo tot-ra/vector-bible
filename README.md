@@ -10,15 +10,15 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 Most of time is spent on embedding generation (days)
 Note that insertion also includes md5 hash generation.
 
-| Nr | Engine                                                                 | Ports                                                     | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search 1.4M rows       | Ease of integration 🤯 |
-|----|------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------|-----------------|------------------------|------------------------|
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | --                                | 🟡 0.069 sec    | 22.566 sec             | ★★☆☆☆                  |               
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 2.525 sec on 760k rows | ★★★★☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 4.216 sec on 814k rows | ★★★☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                    | ★★☆☆☆                  | 
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | --                     | ★★★☆☆                  |
-| 6  | Elastic 8.15                                                           |                                                           |                                   |                 | --                     |                        |
-| 7  | [ChromaDB 0.5.4](https://github.com/chroma-core/chroma)                | 8000                                                      | 🔴 1.795 sec                      | 🟢 0.002 sec    | --                     | ★★★★☆                  |
+| Nr | Engine                                                                 | Ports                                                     | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1M rows   | Ease of integration 🤯 |
+|----|------------------------------------------------------------------------|-----------------------------------------------------------|-----------------------------------|-----------------|-------------------|------------------------|
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                      | --                                | 🟡 0.069 sec    | 22.566 sec @ 1.4M | ★★☆☆☆                  |               
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections) | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 0.119 sec @ 920k  | ★★★★☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                  | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 0.388 sec @ 683k; | ★★★☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                       | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A               | ★★☆☆☆                  | 
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | 8080 50051                                                | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | --                | ★★★☆☆                  |
+| 6  | Elastic 8.15                                                           |                                                           |                                   |                 | --                |                        |
+| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                      | 🔴 15.359 sec                     | 🟡 0.024 sec    | --                | ★★★★☆                  |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -177,6 +177,15 @@ ORDER BY weight DESC LIMIT 10000;
 - ✅ has built-in UI with a limited embedding visualization
 - ✅ good community & PR activity
 - 🟡 required entry to have `id`
+- Failed at 920k, possibly related to docker?
+```
+grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:0.0.0.0:6334: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:0.0.0.0:6334: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2024-08-22T04:34:22.315805+03:00"}"
+>
+```
+
 
 ```mermaid
 flowchart LR
@@ -213,19 +222,19 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 </details>
 
 <details>
-<summary>Qdrant similarity results on 760k dataset</summary>
+<summary>Qdrant similarity results on 920k dataset</summary>
 
 ```
-Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
-Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717798590660095
-Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707683682441711
-Text: Но Христос воскрес из мертвых, первенец из умерших.; Similarity: 0.8627219200134277
-Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: 0.8626047968864441
-Text: и что Он погребен был, и что воскрес в третий день, по Писанию,; Similarity: 0.8371099233627319
-Text: Ибо как смерть через человека, так через человека и воскресение мертвых.; Similarity: 0.8319414258003235
-Text: যীশু খ্রীষ্টকে স্মরণ করো, যিনি মৃতলোক থেকে পুনরুত্থিত হয়েছেন এবং যিনি দাউদের বংশজাত। এই হল আমার সুসমাচার।; Similarity: 0.827512264251709
+Text: του ορισθεντος υιου θεου εν δυναμει κατα πνευμα αγιωσυνης εξ αναστασεως νεκρων ιησου χριστου του κυριου ημων; Similarity: 0.8435215950012207
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566666603088
+Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566666603088
 Text: in der er gewirkt hat in dem Christus, indem er ihn aus den Toten auferweckte; (und er setzte ihn zu seiner Rechten in den himmlischen Örtern,; Similarity: 0.8242398500442505
-Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248916625977
+Text: in der er gewirkt hat in dem Christus, indem er ihn aus den Toten auferweckte; (und er setzte ihn zu seiner Rechten in den himmlischen Örtern,; Similarity: 0.8242398500442505
+Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在他的右手边，; Similarity: 0.8202930688858032
+Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在他的右手边，; Similarity: 0.8202930688858032
+Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在他的右手边，; Similarity: 0.8202930688858032
+Text: Koju uèini u Hristu, kad ga podiže iz mrtvijeh i posadi sebi s desne strane na nebesima,; Similarity: 0.8188406229019165
+Text: که درمسیح عمل کرد چون او را از مردگان برخیزانید وبه‌دست راست خود در جایهای آسمانی نشانید،; Similarity: 0.8181155920028687```
 ```
 </details>
 
@@ -237,6 +246,13 @@ Text: и гробы отверзлись; и многие тела усопши�
 - 🟡 Milvus does not come with built-in UI, so we use `attu` for that.
 - 🟡 Has extra containers
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
+- ❌ Failed at insertion @ 683k
+```pymilvus.exceptions.MilvusException: <MilvusException: (code=<bound method _MultiThreadedRendezvous.code of <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61)"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2024-08-22T04:07:48.480463+03:00"}"
+>>, message=Retry run out of 75 retry times, message=failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61))>
+```
 
 ```mermaid
 flowchart LR
@@ -373,7 +389,7 @@ docker-compose -f docker-compose.elastic.yml up
 - ✅ Very straightforward quickstart guide
 - ❌ `TypeError: Descriptors cannot be created directly in chromadb.telemetry.opentelemetry `, had to set `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python` env var
 - ❌ [No batching support](https://cookbook.chromadb.dev/strategies/batching/#creating-batches)
-
+- ❌ `chromadb.api.configuration.InvalidConfigurationError: batch_size must be less than or equal to sync_threshold` when trying to `client.get_or_create_collection` due to mismatching client and server versions 
 ```bash
 docker-compose -f docker-compose.chromadb.yml up
 ```

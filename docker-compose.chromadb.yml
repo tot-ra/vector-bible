@@ -5,7 +5,7 @@ networks:
     driver: bridge
 services:
   server:
-    image: ghcr.io/chroma-core/chroma:0.5.4
+    image: ghcr.io/chroma-core/chroma:0.5.5
     environment:
       - IS_PERSISTENT=TRUE
     volumes:
