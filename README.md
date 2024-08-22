@@ -10,15 +10,15 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 Most of time is spent on embedding generation (days)
 Note that insertion also includes md5 hash generation.
 
-| Nr | Engine                                                                 | Ports                                                                           | UI | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1M rows          | Ease of integration 🤯 | Storage                                  |
-|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------------------------------|-----------------|--------------------------|------------------------|------------------------------------------|
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟡 | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 🟡0.119 sec @ 920k       | ★★★★☆                  | 🟢 3.21 GB @ 900k                        |
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M       | ★★★☆☆                  | 🟢 8.41 GB @ 1.4M                        |
-| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟢 0.022 sec @ 1.4M      | ★★★★☆                  | 🟡 12.37 GB @ 1.4M                       |
-| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.372 sec @ 1.4M (KNN) | ★★★☆☆                  | 🔴 23.46 GB                              |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.388 sec @ 683k;      | ★★★☆☆                  | 🔴 34.25 GB                              |
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M     | ★★☆☆☆                  | 🟡 11.2 GB = 1.4M embeddings + 8M others |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                      | ★★☆☆☆                  | N/A                                      |
+| Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1M rows                 | Storage                                  | Ease of integration 🤯 |
+|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------|-----------------------------------|-----------------|---------------------------------|------------------------------------------|------------------------|
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢 | 🟡        | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 🟡0.119 sec @ 920k              | 🟢 3.21 GB @ 900k                        | ★★★★☆                  |
+| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M              | 🟢 8.41 GB @ 1.4M                        | ★★★☆☆                  |
+| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🟢        | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟢 0.022 sec @ 1.4M             | 🟡 12.37 GB @ 1.4M                       | ★★★★☆                  |
+| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.372 sec @ 1.4M (KNN)        | 🔴 23.46 GB @ 1.4M                       | ★★★☆☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🔴        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.388 sec @ 683k; <br /> 989k | 🔴 26.7GB @ 989k                         | ★★★☆☆                  |
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | 🟢        | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M            | 🟡 11.2 GB = 1.4M embeddings + 8M others | ★★☆☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                             | N/A                                      | ★★☆☆☆                  |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
@@ -260,6 +260,7 @@ Text: که درمسیح عمل کرد چون او را از مردگان برخ�
 	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2024-08-22T04:07:48.480463+03:00"}"
 >>, message=Retry run out of 75 retry times, message=failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61))>
 ```
+- ❌ Second attempt - Failed at insertion @ 989k. No errors on milvus side. UI and client just loose connection and server is not responsive. Becomes accessible after restart
 
 ```mermaid
 flowchart LR
@@ -355,7 +356,7 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 
 
 
-### 5. Weaviate
+### 5. Weviate
 ```bash
 docker-compose -f docker-compose.weaviate.yml up weaviate
 ```
@@ -371,7 +372,7 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
 <img width="600" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
 
 <details>
-<summary>Weaviate similarity results on 21k dataset</summary>
+<summary>Weviate similarity results on 21k dataset</summary>
 
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226889610290527
@@ -388,7 +389,7 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 </details>
 
 <details>
-<summary>Weaviate similarity results on 1.4M dataset</summary>
+<summary>Weviate similarity results on 1.4M dataset</summary>
 
 ```
 Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421523809432983
