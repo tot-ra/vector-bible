@@ -18,22 +18,23 @@ Note that insertion also includes md5 hash generation.
 | 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                  | ★★☆☆☆                  | 
 | 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M   | ★★★☆☆                  |
 | 6  | Elastic 8.15                                                           |                                                                                 |                                   |                 | --                   |                        |
-| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 1.21 sec                       | 🟡 0.018 sec    | --                   | ★★★★☆                  |
+| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 1.21 sec -> 4 sec              | 🟡 0.018 sec    | --                   | ★★★★☆                  |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
 
-### Testing Environment
-
-- python 3.11
-- local mac M3 32GB
-- docker with 4 CPU limit and 12.8GB RAM limit
+### Testing Approach
+Used: 
+- 💻 Mac M3 36GB RAM (Nov 2023), Sonoma 14.1. On your machine, you likely will get different result. Goal is to compare engines between each other on the same machine.
+- 🐍 python 3.11 was used to run test scripts that move the data
+  - I tried to measure API time, not the time it takes to generate embeddings 
+- 🐳 docker with 6 CPU and 12.8GB RAM global limits, no per-container limits
   - single-container dockerized vector databases
-  - While testing, only postgres container and vector DB containers were running to reduce potential CPU/io interference
-
-## Testing text data
-
-Basic test is to load bible text data in different languages and compare search performance
+  - While testing, only postgres container (as source) and vector-DB-under-test containers were running to reduce potential CPU and I/O interference
+- Basic test is to load bible text data and compare search performance
+  - I did not use external (OpenAI) APIs for embeddings, but even so, multilingual model for embedding generation was very slow. Thats why I stored it in postgres to not do it in runtime while doing inserts
+  - For 21k dataset, I used `WHERE translationId = 'rus_syn'` to filter out data from postgres that had embeddings. Goal is to see how engines perform initially
+  - For 1.4M dataset I just used rows that had embeddings in postgres by that time. Goal is to test larger scales of data that engine may see in production and how it degrades
 
 ### Data preparation
 
@@ -89,6 +90,7 @@ python 1-pgvector.py
 
 <details>
 <summary>Postgres similarity results on 24k dataset</summary>
+
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226886199645554
 Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796943695277
@@ -105,6 +107,7 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 
 <details>
 <summary>Postgres similarity results on 1M dataset</summary>
+
 ```
 Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.942152166206366
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226886199645554
@@ -365,6 +368,7 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
 
 <details>
 <summary>Weaviate similarity results on 21k dataset</summary>
+
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226889610290527
 Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796802520752
@@ -381,6 +385,7 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 
 <details>
 <summary>Weaviate similarity results on 1.4M dataset</summary>
+
 ```
 Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421523809432983
 Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421523809432983
@@ -398,7 +403,7 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 
 ### 6. Elastic
 - 🟡 Custom license
-
+- ❌ `fatal exception while booting Elasticsearch: cannot read configured PEM certificate_authorities`
 ```bash
 docker-compose -f docker-compose.elastic.yml up
 ```

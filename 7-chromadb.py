@@ -19,7 +19,7 @@ client = chromadb.HttpClient(
     database=DEFAULT_DATABASE
 )
 
-collection_name = "collection_768ru2"
+collection_name = "collection_768"
 # Create collection. get_collection, get_or_create_collection, delete_collection also available!
 try:
     collection = client.get_collection(name=collection_name)
@@ -78,7 +78,7 @@ def chroma_filter_search(embeddings):
 
 
 
-read_verses(chroma_inserts, max_items=24000, minibatch_size=1000)
+read_verses(chroma_inserts, max_items=1400000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")
