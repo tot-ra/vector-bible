@@ -7,18 +7,15 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 
 ## Candidates & Results
 
-Most of time is spent on embedding generation (days)
-Note that insertion also includes md5 hash generation.
-
-| Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1M rows          | Storage                                  | Ease of integration 🤯 |
-|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------|-----------------------------------|-----------------|--------------------------|------------------------------------------|------------------------|
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢 | 🟡        | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 🟡0.119 sec @ 920k       | 🟢 3.21 GB @ 900k                        | ★★★★☆                  |
-| 5  | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M       | 🟢 8.41 GB @ 1.4M                        | ★★★☆☆                  |
-| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🟢        | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟢 0.022 sec @ 1.4M      | 🟡 12.37 GB @ 1.4M                       | ★★★★☆                  |
-| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.372 sec @ 1.4M (KNN) | 🔴 23.46 GB @ 1.4M                       | ★★★☆☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🔴        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.232 sec @ 989k       | 🔴 26.7GB @ 989k                         | ★★★☆☆                  |
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | 🟢        | --                                | 🟡 0.069 sec    | 🔴 22.566 sec @ 1.4M     | 🟡 11.2 GB = 1.4M embeddings + 8M others | ★★☆☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                      | N/A                                      | ★★☆☆☆                  |
+| Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1.4M rows  | Storage                                  | Ease of integration 🤯 |
+|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------|-----------------------------------|-----------------|--------------------|------------------------------------------|------------------------|
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢 | 🟢        | 🟢 0.129 sec -> 0.4 sec           | 🟢 0.008 sec    | 🟢0.031 sec        | 🟢 4.8 GB @ 1.4M                         | ★★★★☆                  |
+| 5  | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec        | 🟢 8.41 GB @ 1.4M                        | ★★★☆☆                  |
+| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🟢        | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟢 0.022 sec       | 🟡 12.37 GB @ 1.4M                       | ★★★★☆                  |
+| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.372 sec        | 🔴 23.46 GB @ 1.4M                       | ★★★☆☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🔴        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.232 sec @ 989k | 🔴 26.7GB @ 989k                         | ★★★☆☆                  |
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | 🟢        | --                                | 🟡 0.069 sec    | 🔴 22.566 sec      | 🟡 11.2 GB = 1.4M embeddings + 8M others | ★★☆☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                | N/A                                      | ★★☆☆☆                  |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/),  [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
@@ -42,7 +39,11 @@ Used:
   - I did not use external (OpenAI) APIs for embeddings, but even so, multilingual model for embedding generation was very slow. Thats why I stored it in postgres to not do it in runtime while doing inserts
   - For 21k dataset, I used `WHERE translationId = 'rus_syn'` to filter out data from postgres that had embeddings. Goal is to see how engines perform initially
   - For 1.4M dataset I just used rows that had embeddings in postgres by that time. Goal is to test larger scales of data that engine may see in production and how it degrades
-- I tried to use Cosine similarity with HNSW
+- Most of time is spent on embedding generation (days)
+- Insertion speed - note that it is impacted by md5 hash generation for `id`s if engine needs it. Also, reading a batch from postgres takes time.
+- Search - I tried to use Cosine similarity with HNSW index
+- Storage - I looked at filesystem, not at what engine itself reports in UI (if its able)
+- Ease of integration - Subjective metric based on how easy it was to set up based on guide, docs and example code; How intuitive is API, docker setup and UI.
 
 ### Data preparation
 
@@ -56,7 +57,7 @@ Used:
 ```mermaid
 flowchart LR
 sqlite -- " 0 - import manually in IDE " --> postgres 
-postgres -- " text " --> 1-pgvector.py -- " 1 - generate embeddings " --> postgres[( postgres )]
+postgres -- " text " --> 1-pgvector.py -- " generate embeddings " --> postgres[( postgres )]
 ```
 ```
   create index ChapterVerse_translationid_bookid_chapternumber_number_index
@@ -236,19 +237,19 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 </details>
 
 <details>
-<summary>Qdrant similarity results on 920k dataset</summary>
+<summary>Qdrant similarity results on 1.4M dataset</summary>
 
 ```
-Text: του ορισθεντος υιου θεου εν δυναμει κατα πνευμα αγιωσυνης εξ αναστασεως νεκρων ιησου χριστου του κυριου ημων; Similarity: 0.8435215950012207
-Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566666603088
-Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.8282566666603088
-Text: in der er gewirkt hat in dem Christus, indem er ihn aus den Toten auferweckte; (und er setzte ihn zu seiner Rechten in den himmlischen Örtern,; Similarity: 0.8242398500442505
-Text: in der er gewirkt hat in dem Christus, indem er ihn aus den Toten auferweckte; (und er setzte ihn zu seiner Rechten in den himmlischen Örtern,; Similarity: 0.8242398500442505
-Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在他的右手边，; Similarity: 0.8202930688858032
-Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在他的右手边，; Similarity: 0.8202930688858032
-Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在他的右手边，; Similarity: 0.8202930688858032
-Text: Koju uèini u Hristu, kad ga podiže iz mrtvijeh i posadi sebi s desne strane na nebesima,; Similarity: 0.8188406229019165
-Text: که درمسیح عمل کرد چون او را از مردگان برخیزانید وبه‌دست راست خود در جایهای آسمانی نشانید،; Similarity: 0.8181155920028687```
+Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421520829200745
+Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421520829200745
+Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421520829200745
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226888418197632
+Text: që në ndonjë mënyrë të mund t’ia arrij ringjalljes prej së vdekurish.; Similarity: 0.9156136512756348
+Text: që në ndonjë mënyrë të mund t’ia arrij ringjalljes prej së vdekurish.; Similarity: 0.9156136512756348
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.9023655652999878
+Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: 0.8730900287628174
+Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: 0.8730900287628174
 ```
 </details>
 
@@ -428,6 +429,13 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 - ❌ Has strict security `fatal exception while booting Elasticsearch: cannot read configured PEM certificate_authorities`, had to disable SSL and other security checks
 ```bash
 docker-compose -f docker-compose.elastic.yml up
+```
+
+```mermaid
+flowchart LR
+kibana --"render ui"--> elasticsearch
+6-elastic.py -- " read " --> postgres
+6-elastic.py -- " insert & search " --> elasticsearch
 ```
 
 <img width="1698" alt="Screenshot 2024-08-22 at 22 57 10" src="https://github.com/user-attachments/assets/d4c3a883-9acb-4ff4-b31c-bc9b5e5e5c1e">
