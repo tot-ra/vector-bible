@@ -23,7 +23,7 @@ Note that insertion also includes md5 hash generation.
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/),  [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
 
-I did no have time/energy to also test:
+I did not have time/energy to also test:
 [Vespa](https://github.com/vespa-engine/vespa), 
 [LanceDB](https://github.com/lancedb/lancedb), 
 [Marqo](https://github.com/marqo-ai/marqo),
