@@ -282,7 +282,8 @@ python -m pip install pymilvus
 docker-compose -f docker-compose.milvus.yml up
 ```
 
-<img width="600" alt="Screenshot 2024-08-20 at 01 54 28" src="https://github.com/user-attachments/assets/9034e2de-7c11-4cfe-a762-826d01251fff">
+<img width="1685" alt="Screenshot 2024-08-22 at 22 55 08" src="https://github.com/user-attachments/assets/014eec6a-77c3-49ee-b356-beb0336a57a5">
+
 
 <details>
 <summary>Milvus similarity results on 21k dataset</summary>
