@@ -414,6 +414,9 @@ docker-compose -f docker-compose.elastic.yml up
 docker-compose -f docker-compose.chromadb.yml up
 ```
 
+<img width="600" alt="Screenshot 2024-08-22 at 13 17 23" src="https://github.com/user-attachments/assets/dc5daa48-4ff6-448c-aac7-3e3b3925c115">
+
+
 <details>
 <summary>ChromaDB similarity results on 21k dataset</summary>
 
