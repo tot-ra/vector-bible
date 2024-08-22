@@ -7,15 +7,15 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 
 ## Candidates & Results
 
-| Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1.4M rows                                        | Storage                                  | RAM     | Ease of integration 🤯 |
-|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------|-----------------------------------|-----------------|----------------------------------------------------------|------------------------------------------|---------|------------------------|
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢 | 🟢        | 🟢 0.129 sec -> 0.4 sec           | 🟢 0.008 sec    | 🟢0.031 sec                                              | 🟢 4.8 GB @ 1.4M                         | 4.73 GB | ★★★★☆                  |
-| 5  | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec                                              | 🟢 8.41 GB @ 1.4M                        | 8.16 GB | ★★★☆☆                  |
-| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.20 sec -> 🟢0.011                                    | 🔴 23.46 GB @ 1.4M                       | 5.1 GB  | ★★★☆☆                  |
-| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🟢        | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟡1.26 sec -> 🟢0.022 sec                                | 🟡 12.37 GB @ 1.4M                       | 4.86 GB | ★★★★☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🔴        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.232 sec @ 989k                                       | 🔴 26.7GB @ 989k                         | -       | ★★★☆☆                  |
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | 🟢        | --                                | 🟡 0.069 sec    | 🔴 6.608 sec (HNSW index)<br /> 🔴 22.566 sec (no index) | 🟡 11.2 GB = 1.4M embeddings + 8M others | 63 MB   | ★★☆☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                                                      | N/A                                      | -       | ★★☆☆☆                  |
+| Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1.4M rows                                                                                 | Storage                                  | RAM     | Ease of integration 🤯 |
+|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------|-----------------------------------|-----------------|---------------------------------------------------------------------------------------------------|------------------------------------------|---------|------------------------|
+| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢 | 🟢        | 🟢 0.129 sec -> 0.4 sec           | 🟢 0.008 sec    | 🟢0.031 sec                                                                                       | 🟢 4.8 GB @ 1.4M                         | 4.73 GB | ★★★★☆                  |
+| 5  | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec                                                                                       | 🟢 8.41 GB @ 1.4M                        | 8.16 GB | ★★★☆☆                  |
+| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.20 sec -> 🟢0.011                                                                             | 🔴 23.46 GB @ 1.4M                       | 5.1 GB  | ★★★☆☆                  |
+| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🟢        | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟡1.26 sec -> 🟢0.022 sec                                                                         | 🟡 12.37 GB @ 1.4M                       | 4.86 GB | ★★★★☆                  |
+| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🔴        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.232 sec @ 989k                                                                                | 🔴 26.7GB @ 989k                         | -       | ★★★☆☆                  |
+| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | 🟢        | --                                | 🟡 0.069 sec    | 🔴 6.39 (HNSW L1) 🔴 5.92 (HNSW L2)  🔴 6.608 sec (HNSW index COS)<br /> 🔴 22.566 sec (no index) | 🟡 11.2 GB = 1.4M embeddings + 8M others | 63 MB   | ★★☆☆☆                  |
+| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                                                                                               | N/A                                      | -       | ★★☆☆☆                  |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/),  [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
@@ -153,7 +153,7 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 </details>
 
 <details>
-<summary>Postgres similarity results on 1.4M dataset, HNSW index</summary>
+<summary>Postgres similarity results on 1.4M dataset, HNSW index and Cosine distance (`<=>`)</summary>
 
 ```
 Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.942152166206366
@@ -166,6 +166,39 @@ Text: अपरं स्मुर्णास्थसमिते र्दू
 Text: Но Бог воскресил Его из мертвых.; Similarity: 0.8717796943695277
 Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707684267530202
 Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.8700215089349997
+```
+</details>
+
+<details>
+<summary>Postgres similarity results on 1.4M dataset, HNSW index and L1 distance (`<+>`)</summary>
+
+```
+Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: -15.984977722167969
+Text: чтобы достигнуть воскресения мертвых.; Similarity: -17.258892059326172
+Text: që në ndonjë mënyrë të mund t’ia arrij ringjalljes prej së vdekurish.; Similarity: -17.903274536132812
+Text: щоб таким чином якось досягти воскресіння з мертвих.; Similarity: -19.21749496459961
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: -19.965681076049805
+Text: si en alguna manera llegase a la resurrección de los muertos.; Similarity: -22.477447509765625
+Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: -22.769420623779297
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: -22.937271118164062
+Text: а Пачынальніка Жыцьця забілі; Гэтага Бог уваскрэсіў зь мёртвых, і мы сьведкі таго.; Similarity: -23.431766510009766
+Text: hogy így eljuthassak a halottak feltámadására.; Similarity: -23.694473266601562
+```
+</details>
+<details>
+<summary>Postgres similarity results on 1.4M dataset, HNSW index and L2 distance (`<->`)</summary>
+
+```
+Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.2030089967677845
+Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.14195527821053566
+Text: që në ndonjë mënyrë të mund t’ia arrij ringjalljes prej së vdekurish.; Similarity: 0.10919599491552112
+Text: щоб таким чином якось досягти воскресіння з мертвих.; Similarity: 0.03218261941693723
+Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.0027483321380983305
+Text: si en alguna manera llegase a la resurrección de los muertos.; Similarity: -0.08676286247228848
+Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: -0.10283884546121591
+Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: -0.1064100807014805
+Text: а Пачынальніка Жыцьця забілі; Гэтага Бог уваскрэсіў зь мёртвых, і мы сьведкі таго.; Similarity: -0.15120845409069927
+Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: -0.15640871144354795
 ```
 </details>
 
