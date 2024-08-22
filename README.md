@@ -254,13 +254,21 @@ Text: که درمسیح عمل کرد چون او را از مردگان برخ�
 - 🟡 Has extra containers
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
 - ❌ Failed at insertion @ 683k
+- ❌ Second attempt - Failed at insertion @ 989k. No errors on milvus side. UI and client just loose connection and server is not responsive. Becomes accessible after restart
+
 ```pymilvus.exceptions.MilvusException: <MilvusException: (code=<bound method _MultiThreadedRendezvous.code of <_MultiThreadedRendezvous of RPC that terminated with:
 	status = StatusCode.UNAVAILABLE
 	details = "failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61)"
 	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2024-08-22T04:07:48.480463+03:00"}"
 >>, message=Retry run out of 75 retry times, message=failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:19530: Failed to connect to remote host: connect: Connection refused (61))>
+
+pymilvus.exceptions.MilvusException: <MilvusException: (code=2, message=Fail connecting to server on localhost:19530, illegal connection params or server unavailable)>
 ```
-- ❌ Second attempt - Failed at insertion @ 989k. No errors on milvus side. UI and client just loose connection and server is not responsive. Becomes accessible after restart
+Some suspicious logs:
+```
+milvus-standalone  | [2024/08/22 19:51:46.460 +00:00] [WARN] [checkers/index_checker.go:139] ["failed to get indexInfo for segment"] [collectionID=452028396578800432] [segmentID=452028396580013227] [error="index not found[segmentID=452028396580013227]"]
+milvus-standalone  | [2024/08/22 19:51:46.919 +00:00] [INFO] [datacoord/task_scheduler.go:214] ["there is no idle indexing node, wait a minute..."]
+```
 
 ```mermaid
 flowchart LR
