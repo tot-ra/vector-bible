@@ -361,6 +361,8 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
   - Did not like `id` or `vector` in properties
 - ❌ slow insert speed gets worse as amount of data grows 0.4 sec -> 2.5 sec
 
+<img width="600" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
+
 <details>
 <summary>Weaviate similarity results on 21k dataset</summary>
 ```
@@ -403,6 +405,8 @@ docker-compose -f docker-compose.elastic.yml up
 
 ### 7. ChromaDB
 - ✅ Very straightforward quickstart guide
+- 🟡 API is confusing as it looks like column DB
+- ❌ Because of column API, one-by-one insertion speed is very slow. Likely could be improved though if multiple columns are first changed.
 - ❌ `TypeError: Descriptors cannot be created directly in chromadb.telemetry.opentelemetry `, had to set `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python` env var
 - ❌ [No batching support](https://cookbook.chromadb.dev/strategies/batching/#creating-batches)
 - ❌ `chromadb.api.configuration.InvalidConfigurationError: batch_size must be less than or equal to sync_threshold` when trying to `client.get_or_create_collection` due to mismatching client and server versions 
