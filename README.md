@@ -423,7 +423,7 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 docker-compose -f docker-compose.elastic.yml up
 ```
 
-<img width="600" alt="Screenshot 2024-08-22 at 16 35 22" src="https://github.com/user-attachments/assets/ba32d6b8-2ac9-427f-964b-834b6231ada4">
+<img width="1698" alt="Screenshot 2024-08-22 at 22 57 10" src="https://github.com/user-attachments/assets/d4c3a883-9acb-4ff4-b31c-bc9b5e5e5c1e">
 
 
 <details>
