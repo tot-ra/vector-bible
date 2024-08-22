@@ -439,7 +439,11 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 - ❌ Because of column API, one-by-one insertion speed is very slow. Likely could be improved though if multiple columns are first changed.
 - ❌ `TypeError: Descriptors cannot be created directly in chromadb.telemetry.opentelemetry `, had to set `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python` env var
 - ❌ [No batching support](https://cookbook.chromadb.dev/strategies/batching/#creating-batches)
-- ❌ `chromadb.api.configuration.InvalidConfigurationError: batch_size must be less than or equal to sync_threshold` when trying to `client.get_or_create_collection` due to mismatching client and server versions 
+- ❌ `chromadb.api.configuration.InvalidConfigurationError: batch_size must be less than or equal to sync_threshold` when trying to `client.get_or_create_collection` due to mismatching client and server versions
+
+Storage (For 1.4M dataset) looks like SQLite is used:
+<img width="819" alt="Screenshot 2024-08-22 at 17 14 24" src="https://github.com/user-attachments/assets/de991327-60bd-42fa-a96a-e73bab7758f2">
+
 ```bash
 docker-compose -f docker-compose.chromadb.yml up
 ```
