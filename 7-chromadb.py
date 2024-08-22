@@ -21,15 +21,19 @@ client = chromadb.HttpClient(
 
 collection_name = "collection_768ru2"
 # Create collection. get_collection, get_or_create_collection, delete_collection also available!
-collection = client.get_collection(name=collection_name)
-
-if collection is None:
+try:
+    collection = client.get_collection(name=collection_name)
+except Exception as e:
     collection = client.get_or_create_collection(name=collection_name, metadata={"hnsw:space": "cosine"})
 
 
 def chroma_inserts(chunk):
     start_time = time.perf_counter()
 
+    documents = []
+    embeddings = []
+    metadatas = []
+    ids = []
     for id, text, meta, embedding in chunk:
         md5_hash.update(id.encode('utf-8'))
         id = md5_hash.hexdigest()
@@ -38,13 +42,17 @@ def chroma_inserts(chunk):
         if isinstance(embedding, np.ndarray):
             embedding = embedding.tolist()
 
+        documents.append(text)
+        embeddings.append(embedding)
+        metadatas.append(meta)
+        ids.append(id)
 
-        collection.add(
-            documents=[text],
-            embeddings=[embedding],
-            metadatas=[meta],
-            ids=[id],
-        )
+    collection.add(
+        documents=documents,
+        embeddings=embeddings,
+        metadatas=metadatas,
+        ids=ids,
+    )
 
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
@@ -70,7 +78,7 @@ def chroma_filter_search(embeddings):
 
 
 
-# read_verses(chroma_inserts, max_items=24000, minibatch_size=1000)
+read_verses(chroma_inserts, max_items=24000, minibatch_size=1000)
 
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")

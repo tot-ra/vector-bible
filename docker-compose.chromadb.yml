@@ -11,7 +11,7 @@ services:
     volumes:
       # Default configuration for persist_directory in chromadb/config.py
       # Currently it's located in "/chroma/chroma/"
-      - chroma-data:/chroma/chroma/
+      - ./chroma-data:/chroma/chroma/
     ports:
       - 18000:8000
     networks:

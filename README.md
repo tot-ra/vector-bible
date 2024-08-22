@@ -18,7 +18,7 @@ Note that insertion also includes md5 hash generation.
 | 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                  | ★★☆☆☆                  | 
 | 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M   | ★★★☆☆                  |
 | 6  | Elastic 8.15                                                           |                                                                                 |                                   |                 | --                   |                        |
-| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 15.359 sec                     | 🟡 0.024 sec    | 0.038 sec            | ★★★★☆                  |
+| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 1.21 sec                       | 🟡 0.018 sec    | --                   | ★★★★☆                  |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/)
