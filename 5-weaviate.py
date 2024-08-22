@@ -85,6 +85,10 @@ def weaviate_search(text):
 
 read_verses(weaviate_inserts, max_items=1400000, minibatch_size=1000)
 
+
+aggregation = collection.aggregate.over_all(total_count=True)
+print(aggregation.total_count)
+
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 embeddings = model.encode("воскресил из мертвых")
 
