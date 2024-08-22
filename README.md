@@ -208,6 +208,11 @@ python -m pip install 'qdrant-client'
 python 2-qdrant.py
 ```
 
+Storage has segments with UUIDs
+
+<img width="892" alt="Screenshot 2024-08-22 at 17 23 00" src="https://github.com/user-attachments/assets/53107e0c-9f72-4f9d-a0ce-8e23f5da997f">
+
+
 <img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
 
 <details>
@@ -362,12 +367,13 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
 - ✅ Fastest search
 - ✅ Lots of docs, Multitenancy, Replication
 - 🟡 But Docs are confusing, emphasize cloud or older client versions, emphasizes OpenAI embeddings and configs instead of custom ones
-- 🟡 Has no management UI
 - 🟡 API at times confusing - `Failed to send 20 objects in a batch of 20. Please inspect client.batch.failed_objects or collection.batch.failed_objects for the failed objects` instead of showing errors.
   - Did not like `id` or `vector` in properties
 - ❌ slow insert speed gets worse as amount of data grows 0.4 sec -> 2.5 sec
+- ❌ Has no management UI, only API
 
 Storage has per-property folders
+
 <img width="300" alt="Screenshot 2024-08-22 at 17 19 14" src="https://github.com/user-attachments/assets/6c64e4a2-50a4-4ec0-b1b2-1e7d216c7709">
 
 
