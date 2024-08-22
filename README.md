@@ -210,7 +210,7 @@ python 2-qdrant.py
 
 Storage has segments with UUIDs
 
-<img width="892" alt="Screenshot 2024-08-22 at 17 23 00" src="https://github.com/user-attachments/assets/53107e0c-9f72-4f9d-a0ce-8e23f5da997f">
+<img width="500" alt="Screenshot 2024-08-22 at 17 23 00" src="https://github.com/user-attachments/assets/53107e0c-9f72-4f9d-a0ce-8e23f5da997f">
 
 
 <img width="600" alt="Screenshot 2024-08-17 at 02 46 07" src="https://github.com/user-attachments/assets/29068c19-1a2c-41ab-a15f-a0eeb92d3a2a">
