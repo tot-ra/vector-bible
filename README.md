@@ -361,7 +361,7 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
   - Did not like `id` or `vector` in properties
 - ❌ slow insert speed gets worse as amount of data grows 0.4 sec -> 2.5 sec
 
-<img width="1078" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
+<img width="600" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
 
 <details>
 <summary>Weaviate similarity results on 21k dataset</summary>
