@@ -13,7 +13,7 @@ Note that insertion also includes md5 hash generation.
 | Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1M rows          | Storage                                  | Ease of integration 🤯 |
 |----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------|-----------------------------------|-----------------|--------------------------|------------------------------------------|------------------------|
 | 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢 | 🟡        | 🟢 0.129 sec -> 0.25 sec          | 🟢 0.008 sec    | 🟡0.119 sec @ 920k       | 🟢 3.21 GB @ 900k                        | ★★★★☆                  |
-| 5  | [Weviate 1.24.22](https://github.com/weaviate/weaviate)                | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M       | 🟢 8.41 GB @ 1.4M                        | ★★★☆☆                  |
+| 5  | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec -> 2 sec             | 🟢 0.006 sec    | 🟢0.010 sec @ 1.4M       | 🟢 8.41 GB @ 1.4M                        | ★★★☆☆                  |
 | 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🟢        | 🔴 1.21 sec -> 4 sec              | 🟢 0.018 sec    | 🟢 0.022 sec @ 1.4M      | 🟡 12.37 GB @ 1.4M                       | ★★★★☆                  |
 | 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec    | 🟡0.372 sec @ 1.4M (KNN) | 🔴 23.46 GB @ 1.4M                       | ★★★☆☆                  |
 | 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🔴        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.232 sec @ 989k       | 🔴 26.7GB @ 989k                         | ★★★☆☆                  |
@@ -365,7 +365,7 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 
 
 
-### 5. Weviate
+### 5. Weaviate
 ```bash
 docker-compose -f docker-compose.weaviate.yml up weaviate
 ```
@@ -381,7 +381,7 @@ docker-compose -f docker-compose.weaviate.yml up weaviate
 <img width="600" alt="Screenshot 2024-08-22 at 13 02 23" src="https://github.com/user-attachments/assets/0ae745e2-8c33-43e6-a60d-88d0d546b654">
 
 <details>
-<summary>Weviate similarity results on 21k dataset</summary>
+<summary>Weaviate similarity results on 21k dataset</summary>
 
 ```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.9226889610290527
@@ -398,7 +398,7 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 </details>
 
 <details>
-<summary>Weviate similarity results on 1.4M dataset</summary>
+<summary>Weaviate similarity results on 1.4M dataset</summary>
 
 ```
 Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.9421523809432983
