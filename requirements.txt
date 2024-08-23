@@ -1,0 +1,17 @@
+sentence-transformers
+psycopg2
+pgvector
+
+qdrant-client==1.11.0
+
+pymilvus
+
+redis
+
+weaviate-client
+
+Elasticsearch
+
+chromadb==0.5.5
+
+marqo

@@ -18,14 +18,14 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 | 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🔴        | 🟢 0.118 sec -> 0.4 sec           | 🔴 0.234 sec    | 🟡0.232 sec @ 989k                                                                                | 🔴 26.7GB @ 989k                         | -       | ★★★☆☆                  |
 | 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | 🟢        | --                                | 🟡 0.069 sec    | 🔴 6.39 (HNSW L1) 🔴 5.92 (HNSW L2)  🔴 6.608 sec (HNSW index COS)<br /> 🔴 22.566 sec (no index) | 🟡 11.2 GB = 1.4M embeddings + 8M others | 63 MB   | ★★☆☆☆                  |
 | 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec -> 4 sec             | 🟡 0.044 sec    | N/A                                                                                               | N/A                                      | -       | ★★☆☆☆                  |
+| 8  | [Marqo 2.11](https://github.com/marqo-ai/marqo)                        | 8882                                                                            | 🔴 | -         | 🔴 4.14 sec                       |                 | N/A                                                                                               | N/A                                      | 4.4 GB  | -                      |
 
 I don't take into account cloud-only solutions like 
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/),  [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
 
 I did not have time/energy to also test:
 [Vespa](https://github.com/vespa-engine/vespa), 
-[LanceDB](https://github.com/lancedb/lancedb), 
-[Marqo](https://github.com/marqo-ai/marqo),
+[LanceDB](https://github.com/lancedb/lancedb),
 [Clickhouse](https://github.com/ClickHouse/ClickHouse), 
 [Cassandra](https://github.com/apache/cassandra)
 
@@ -331,9 +331,9 @@ Text: अपरं स्मुर्णास्थसमिते र्दू
 - 🟡 Takes ~20 sec to start up (compared to others)
 - 🟡 Milvus does not come with built-in UI, so we use `attu` for that.
 - 🟡 Has extra containers
+- ❌ Large usage of Storage. minio/insert_log looks suspicious.
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
-- ❌ Failed at insertion @ 683k
-- ❌ Second attempt - Failed at insertion @ 989k. No errors on milvus side. UI and client just loose connection and server is not responsive. Becomes accessible after restart
+- ❌ Failed at insertion @ 683k and second attempt at @ 989k. No errors in milvus logs. UI and client just loose connection and server is not responsive. Becomes accessible after restart. Maybe related to out of memory?
 
 ```pymilvus.exceptions.MilvusException: <MilvusException: (code=<bound method _MultiThreadedRendezvous.code of <_MultiThreadedRendezvous of RPC that terminated with:
 	status = StatusCode.UNAVAILABLE
@@ -595,3 +595,12 @@ Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.86910486
 Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.8691048622131348
 ```
 </details>
+
+
+### 8. Marqo
+- ❌ does not support 1k batch, only 128, had to lower it but it impacts insert speed. `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': 'Number of docs in add documents request (1000) exceeds limit of 128. If using the Python client, break up your `add_documents` request into smaller batches using its `client_batch_size` parameter.`
+
+`marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': '[{"loc": ["__root__"], "msg": "Field \'custom\' has type \'custom_vector\' and must be a tensor field.`
+`marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': "Cannot specify 'tensorFields' when adding documents to a structured index. 'tensorFields' must be defined in structured index schema at index creation time",`
+
+- ❌ received error `Marqo vector store is out of memory or disk space`
