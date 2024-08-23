@@ -5,6 +5,8 @@ ease of use and features.
 
 https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 
+(above - similarity visualization of 4 books of the New Testament of 21k verses in rus_syn)
+
 ## Candidates & Results
 
 | Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows | Search ~1.4M rows                                                                                 | Storage                                  | RAM     | Ease of integration 🤯 |
