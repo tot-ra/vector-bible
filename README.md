@@ -609,7 +609,9 @@ Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.86910486
 - ❌ does not support 1k batch, only 128, had to lower it but it impacts insert speed. `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': 'Number of docs in add documents request (1000) exceeds limit of 128. If using the Python client, break up your `add_documents` request into smaller batches using its `client_batch_size` parameter.`
   - I used CPU-based indexing. Docs and other guides say that GPU-based is faster
 - ❌ was unable to use docker volumes, got: `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': "Marqo cannot connect to Zookeeper`
-- ❌ received error `Marqo vector store is out of memory or disk space`, also may be because of docker
+- ❌ with pure docker image, I couldn't go past 24k, I received errors like:
+  - `Marqo vector store is out of memory or disk space`, also may be because of some docker configs?
+  - `marqo-1  | marqo.vespa.exceptions.VespaStatusError: 507: {"pathId":"/document/v1/marqo__settings/marqo__settings/docid/collection_768","id":"id:marqo__settings:marqo__settings::collection_768","message":"[UNKNOWN(251009) @ tcp/9cbb296c4e04:19112/default]: ReturnCode(NO_SPACE, External feed is blocked due to resource exhaustion: in content cluster 'content_default': disk on node 0 [9cbb296c4e04] is 75.9% full (the configured limit is 75.0%). See https://docs.vespa.ai/en/operations/feed-block.html) "}`
 
 <img width="1226" alt="Screenshot 2024-08-24 at 14 50 31" src="https://github.com/user-attachments/assets/d4f83f01-5047-4d66-a1f1-2fd8279725ca">
 
