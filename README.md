@@ -361,7 +361,7 @@ python -m pip install pymilvus
 docker-compose -f docker-compose.milvus.yml up
 ```
 
-<img width="1685" alt="Screenshot 2024-08-22 at 22 55 08" src="https://github.com/user-attachments/assets/014eec6a-77c3-49ee-b356-beb0336a57a5">
+<img width="1420" alt="Screenshot 2024-08-24 at 14 06 47" src="https://github.com/user-attachments/assets/253e285a-9434-46eb-96d8-8799517e48b8">
 
 
 <details>
