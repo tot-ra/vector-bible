@@ -607,6 +607,7 @@ Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.86910486
 `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': "Cannot specify 'tensorFields' when adding documents to a structured index. 'tensorFields' must be defined in structured index schema at index creation time",`
 
 - ❌ does not support 1k batch, only 128, had to lower it but it impacts insert speed. `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': 'Number of docs in add documents request (1000) exceeds limit of 128. If using the Python client, break up your `add_documents` request into smaller batches using its `client_batch_size` parameter.`
+  - I used CPU-based indexing. Docs and other guides say that GPU-based is faster
 - ❌ was unable to use docker volumes, got: `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': "Marqo cannot connect to Zookeeper`
 - ❌ received error `Marqo vector store is out of memory or disk space`, also may be because of docker
 
