@@ -54,7 +54,9 @@ Used:
 - RAM - I looked at docker stats memory usage at 1.4M dataset while doing a search.
 
 ### Data preparation
+For your tests, I would recommend getting dataset from https://huggingface.co/datasets
 
+I used custom dataset:
 - Download SQLite data for bible in different languages
   https://bible.helloao.org/bible.db (8.4GB)
 - Export `ChapterVerse` from SQLIte to Postgres for better performance. You will need some tool like IntelliJ DataGrip.
@@ -68,9 +70,12 @@ sqlite -- " 0 - import manually in IDE " --> postgres
 postgres -- " text " --> 1-pgvector.py -- " generate embeddings " --> postgres[( postgres )]
 ```
 ```
-  create index ChapterVerse_translationid_bookid_chapternumber_number_index
-    on store."ChapterVerse" (translationid, bookid, chapternumber, number);
-  ```
+alter table store."ChapterVerse"
+    add embedding store.vector(768);
+
+create index ChapterVerse_translationid_bookid_chapternumber_number_index
+  on store."ChapterVerse" (translationid, bookid, chapternumber, number);
+```
 
 - Pre-Generate embeddings and store them in same `ChapterVerse`.
   Use multilingual embed model with **768 dim**.
