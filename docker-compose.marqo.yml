@@ -3,5 +3,5 @@ services:
     image: marqoai/marqo:2.11
     ports:
       - "8882:8882"
-#    volumes:
-#      - ./marqoai_data:/opt/vespa/
+    volumes:
+      - ./marqoai_data:/opt/vespa/var
