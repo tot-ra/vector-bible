@@ -11,7 +11,7 @@ conn_params = {
     'user': 'postgres',
     'password': 'postgres',
     'host': 'localhost',
-    'port': '5432'
+    'port': '5430'
 }
 
 # Connect to the PostgreSQL database
@@ -91,7 +91,7 @@ def pgvector_search(embedding):
         # print(r)
         print(f"Text: {r[0]}; Similarity: {r[1]}")
 
-# generate_embeddings()
+generate_embeddings()
 
 embedding = model.encode("воскресил из мертвых")
 

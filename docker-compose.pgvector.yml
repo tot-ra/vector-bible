@@ -1,12 +1,12 @@
 services:
-  postgres:
+  postgres-with-pgvector:
     build:
       context: ./postgres
       dockerfile: postgres.Dockerfile
     ports:
-      - "5432:5432"
+      - "5430:5432" # in case you have another postgres running
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
       - ./postgres/0-vector_extension.sql:/docker-entrypoint-initdb.d/0-vector_extension.sql
 
     environment:
