@@ -9,31 +9,33 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 
 ## Candidates & Results
 
-| Nr | Engine                                                                 | Ports                                                                           | UI | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows      | Search ~1.4M rows                                                                        | Storage (1.4M embeddings) | RAM        | Ease of integration 🤯 |
-|----|------------------------------------------------------------------------|---------------------------------------------------------------------------------|----|-----------|-----------------------------------|----------------------|------------------------------------------------------------------------------------------|---------------------------|------------|------------------------|
-| 2  | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢 | 🟢        | 🟢 0.129 sec => 0.4 sec           | 🟢 0.008 sec         | 🟢0.031 sec                                                                              | 🟢 4.8 GB                 | 🟢 4.73 GB | ★★★★☆                  |
-| 5  | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴 | 🟢        | 🟡 0.411 sec => 2 sec             | 🟢 0.006 sec         | 🟢0.010 sec                                                                              | 🟢 8.41 GB                | 🟡8.16 GB  | ★★★☆☆                  |
-| 6  | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢 | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec         | 🟡0.20 sec -> 🟢0.011                                                                    | 🔴 23.46 GB               | 5.1 GB     | ★★★☆☆                  |
-| 7  | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴 | 🟢        | 🔴 1.21 sec => 4 sec              | 🟢 0.018 sec         | 🟡1.26 sec -> 🟢0.022 sec                                                                | 🟡 12.37 GB               | 🟢4.86 GB  | ★★★★☆                  |
-| 3  | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢 | 🟡        | 🟢 0.118 sec => 0.4 sec           | 🔴 0.234 sec         | 🟡0.358 sec                                                                              | 🔴 15 GB                  | 🟢4.59 GB  | ★★★☆☆                  |
-| 1  | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡 | 🟢        | --                                | 🟡 0.069 sec         | 🔴 6.39 (L1)<br /> 🔴 5.92 (L2)<br />  🔴 6.608 sec (COS)<br /> 🔴 22.566 sec (no index) | 🟡 11.2 GB *              | 63 MB      | ★★☆☆☆                  |
-| 4  | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢 | 🔴        | 🔴 1.353 sec => 4 sec             | 🟡 0.044 sec         | N/A                                                                                      | N/A                       | -          | ★★☆☆☆                  |
-| 8  | [Marqo 2.11](https://github.com/marqo-ai/marqo)                        | 8882                                                                            | 🔴 | -         | 🔴 4.14 sec                       | 🟡 0.19 -> 0.030 sec | N/A                                                                                      | N/A                       | 🟢 5 GB    | ★★☆☆☆                  |
+| Nr  | Engine                                                                 | Ports                                                                           | UI  | Stability | Insert speed<br>(avg on 1k batch) | Search 21k rows      | Search ~1.4M rows                                                                       | Storage (1.4M embeddings) | RAM        | Ease of integration 🤯 |
+| --- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | --- | --------- | --------------------------------- | -------------------- | --------------------------------------------------------------------------------------- | ------------------------- | ---------- | ---------------------- |
+| 2   | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢  | 🟢        | 🟢 0.129 sec => 0.4 sec           | 🟢 0.008 sec         | 🟢0.031 sec                                                                             | 🟢 4.8 GB                 | 🟢 4.73 GB | ★★★★☆                  |
+| 5   | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴  | 🟢        | 🟡 0.411 sec => 2 sec             | 🟢 0.006 sec         | 🟢0.010 sec                                                                             | 🟢 8.41 GB                | 🟡8.16 GB  | ★★★☆☆                  |
+| 6   | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢  | 🟢        | 🔴 2.917 sec                      | 🟢 0.008 sec         | 🟡0.20 sec -> 🟢0.011                                                                   | 🔴 23.46 GB               | 5.1 GB     | ★★★☆☆                  |
+| 7   | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴  | 🟢        | 🔴 1.21 sec => 4 sec              | 🟢 0.018 sec         | 🟡1.26 sec -> 🟢0.022 sec                                                               | 🟡 12.37 GB               | 🟢4.86 GB  | ★★★★☆                  |
+| 3   | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢  | 🟡        | 🟢 0.118 sec => 0.4 sec           | 🔴 0.234 sec         | 🟡0.358 sec                                                                             | 🔴 15 GB                  | 🟢4.59 GB  | ★★★☆☆                  |
+| 1   | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡  | 🟢        | --                                | 🟡 0.069 sec         | 🔴 6.39 (L1)<br /> 🔴 5.92 (L2)<br /> 🔴 6.608 sec (COS)<br /> 🔴 22.566 sec (no index) | 🟡 11.2 GB \*             | 63 MB      | ★★☆☆☆                  |
+| 4   | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢  | 🔴        | 🔴 1.353 sec => 4 sec             | 🟡 0.044 sec         | N/A                                                                                     | N/A                       | -          | ★★☆☆☆                  |
+| 8   | [Marqo 2.11](https://github.com/marqo-ai/marqo)                        | 8882                                                                            | 🔴  | -         | 🔴 4.14 sec                       | 🟡 0.19 -> 0.030 sec | N/A                                                                                     | N/A                       | 🟢 5 GB    | ★★☆☆☆                  |
 
-I don't take into account cloud-only solutions like 
-[Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/),  [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
+I don't take into account cloud-only solutions like
+[Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/), [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
 
 I did not have time/energy to also test:
-[Vespa](https://github.com/vespa-engine/vespa), 
+[Vespa](https://github.com/vespa-engine/vespa),
 [LanceDB](https://github.com/lancedb/lancedb),
-[Clickhouse](https://github.com/ClickHouse/ClickHouse), 
+[Clickhouse](https://github.com/ClickHouse/ClickHouse),
 [Cassandra](https://github.com/apache/cassandra)
 
 ### Testing Approach
-Used: 
+
+Used:
+
 - 💻 Mac M3 36GB RAM (Nov 2023), Sonoma 14.1. On your machine, you likely will get different result. Goal is to compare engines between each other on the same machine.
 - 🐍 python 3.11 was used to run test scripts that move the data
-  - I tried to measure API time, not the time it takes to generate embeddings 
+  - I tried to measure API time, not the time it takes to generate embeddings
 - 🐳 docker with 6 CPU and 12.8GB RAM global limits, no per-container limits
   - single-container dockerized vector databases
   - While testing, only postgres container (as source) and vector-DB-under-test containers were running to reduce potential CPU and I/O interference
@@ -45,18 +47,20 @@ Used:
 - Insertion speed - note that it is impacted by md5 hash generation for `id`s if engine needs it. Also, reading a batch from postgres takes time.
   - `=>` notation means that as dataset grows, insertion speed gets slower
 - Search - I tried to use Cosine similarity with HNSW index
-  - `->` notation means that new query or if server just started, then speed is "cold", but on subsequent queries it is "warm" and faster 
+  - `->` notation means that new query or if server just started, then speed is "cold", but on subsequent queries it is "warm" and faster
   - I tested search after starting a container (cold) and then after it was running for a while (warm)
   - When testing multiple times, I tried to use the fastest time
 - Storage - I looked at filesystem, not at what engine itself reports in UI (if its able)
- - * Note that for postgres, evaluation in addition to 1.4M rows with embeddings, also had 8M other verses
+- - Note that for postgres, evaluation in addition to 1.4M rows with embeddings, also had 8M other verses
 - Ease of integration - Subjective metric based on how easy it was to set up based on guide, docs and example code; How intuitive is API, docker setup and UI.
 - RAM - I looked at docker stats memory usage at 1.4M dataset while doing a search.
 
 ### Data preparation
+
 For your tests, I would recommend getting dataset from https://huggingface.co/datasets
 
 I used custom dataset:
+
 - Download SQLite data for bible in different languages
   https://bible.helloao.org/bible.db (8.4GB)
 - Export `ChapterVerse` from SQLIte to Postgres for better performance. You will need some tool like IntelliJ DataGrip.
@@ -66,9 +70,10 @@ I used custom dataset:
 
 ```mermaid
 flowchart LR
-sqlite -- " 0 - import manually in IDE " --> postgres 
+sqlite -- " 0 - import manually in IDE " --> postgres
 postgres -- " text " --> 1-pgvector.py -- " generate embeddings " --> postgres[( postgres )]
 ```
+
 ```
 alter table store."ChapterVerse"
     add embedding store.vector(768);
@@ -95,6 +100,7 @@ python 0-generate-embeddings.py
 ```
 
 ### 1. Postgres + pgvector
+
 - ✅ Data is stored in Postgres, so no need to sync data between databases
 - 🟡 No specialized UI, but you can reuse postgres-specific ones
 - 🟡 Mediocre search on small dataset
@@ -104,7 +110,6 @@ python 0-generate-embeddings.py
 - ❌ could not install pgvector on Postgres 14 and 15, only version 16 worked
 - ❌ faced `psycopg2.errors.UndefinedFunction: operator does not exist: text <-> vector` when installing extension because
   operators were installed into public schema instead of `store`. Had to reset the image and set extension installation under `store` schema.
-
 
 ```bash
 docker-compose -f docker-compose.pgvector.yml up postgres --build
@@ -117,7 +122,7 @@ python 1-pgvector.py
 ```sql
 alter table store."ChapterVerse"
            add embedding vector
-           
+
 alter table store."ChapterVerse"
 alter column embedding type store.vector(768) using embedding::store.vector(768)
 
@@ -141,6 +146,7 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248023128517
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701932003219
 ```
+
 </details>
 
 <details>
@@ -158,6 +164,7 @@ Text: Но Бог воскресил Его из мертвых.; Similarity: 0.
 Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707684267530202
 Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.8700215089349997
 ```
+
 </details>
 
 <details>
@@ -175,6 +182,7 @@ Text: Но Бог воскресил Его из мертвых.; Similarity: 0.
 Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.8707684267530202
 Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.8700215089349997
 ```
+
 </details>
 
 <details>
@@ -192,6 +200,7 @@ Text: а Начальника жизни убили. Сего Бог воскр�
 Text: а Пачынальніка Жыцьця забілі; Гэтага Бог уваскрэсіў зь мёртвых, і мы сьведкі таго.; Similarity: -23.431766510009766
 Text: hogy így eljuthassak a halottak feltámadására.; Similarity: -23.694473266601562
 ```
+
 </details>
 <details>
 <summary>Postgres similarity results on 1.4M dataset, HNSW index and L2 distance (`<->`)</summary>
@@ -208,12 +217,12 @@ Text: अपरं स्मुर्णास्थसमिते र्दू
 Text: а Пачынальніка Жыцьця забілі; Гэтага Бог уваскрэсіў зь мёртвых, і мы сьведкі таго.; Similarity: -0.15120845409069927
 Text: Так и при воскресении мертвых: сеется в тлении, восстает в нетлении;; Similarity: -0.15640871144354795
 ```
-</details>
 
+</details>
 
 #### How to visualize embeddings
 
-You can use [cosmograph](https://cosmograph.app/run/)  online tool to visualize nodes and edges.
+You can use [cosmograph](https://cosmograph.app/run/) online tool to visualize nodes and edges.
 
 <details>
 <summary>Exporting data for visualization</summary>
@@ -257,6 +266,7 @@ WHERE similarity > 0.95
 ORDER BY weight DESC LIMIT 10000;
 
 ```
+
 </details>
 
 ### 2. Qdrant
@@ -270,6 +280,7 @@ ORDER BY weight DESC LIMIT 10000;
 - 🟡 required entry to have `id`
 - ❌ Failing on starting `ERROR qdrant::startup: Panic occurred in file /qdrant/lib/collection/src/shards/replica_set/mod.rs at line 277: Failed to load local shard "./storage/collections/collection_768/0": Service internal error: Not a directory (os error 20)`
 - ❌ Failed at 920k, possibly related to docker?
+
 ```
 grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
 	status = StatusCode.UNAVAILABLE
@@ -277,7 +288,6 @@ grpc._channel._InactiveRpcError: <_InactiveRpcError of RPC that terminated with:
 	debug_error_string = "UNKNOWN:Error received from peer  {grpc_message:"failed to connect to all addresses; last error: UNKNOWN: ipv4:0.0.0.0:6334: Failed to connect to remote host: connect: Connection refused (61)", grpc_status:14, created_time:"2024-08-22T04:34:22.315805+03:00"}"
 >
 ```
-
 
 ```mermaid
 flowchart LR
@@ -311,6 +321,7 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248916625977
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162703514099121
 ```
+
 </details>
 
 <details>
@@ -328,9 +339,11 @@ Text: om eenmaal te kunnen komen tot de opstanding uit de doden.; Similarity: 0.
 Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: 0.8730900287628174
 Text: अपरं स्मुर्णास्थसमिते र्दूतं प्रतीदं लिख; य आदिरन्तश्च यो मृतवान् पुनर्जीवितवांश्च तेनेदम् उच्यते,; Similarity: 0.8730900287628174
 ```
+
 </details>
 
 ### 3. Milvus
+
 - ✅ Docs look impressive
 - ✅ good community & PR activity
 - 🟡 Has concept of "loading" and unloading a collection (from memory)
@@ -350,7 +363,9 @@ Text: अपरं स्मुर्णास्थसमिते र्दू
 
 pymilvus.exceptions.MilvusException: <MilvusException: (code=2, message=Fail connecting to server on localhost:19530, illegal connection params or server unavailable)>
 ```
+
 Some suspicious logs:
+
 ```
 milvus-standalone  | [2024/08/22 19:51:46.460 +00:00] [WARN] [checkers/index_checker.go:139] ["failed to get indexInfo for segment"] [collectionID=452028396578800432] [segmentID=452028396580013227] [error="index not found[segmentID=452028396580013227]"]
 milvus-standalone  | [2024/08/22 19:51:46.919 +00:00] [INFO] [datacoord/task_scheduler.go:214] ["there is no idle indexing node, wait a minute..."]
@@ -370,7 +385,6 @@ docker-compose -f docker-compose.milvus.yml up
 
 <img width="1420" alt="Screenshot 2024-08-24 at 14 06 47" src="https://github.com/user-attachments/assets/253e285a-9434-46eb-96d8-8799517e48b8">
 
-
 <details>
 <summary>Milvus similarity results on 21k dataset</summary>
 
@@ -386,6 +400,7 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248320579529
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162701725959778
 ```
+
 </details>
 
 <details>
@@ -407,9 +422,10 @@ Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在�
 </details>
 
 ### 4. Redis
+
 - ✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
 - 🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
-`redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
+  `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
 - 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
 - 🟡 custom license
 - 🟡 docs are confusing
@@ -420,10 +436,9 @@ Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在�
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
 - ❌ `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk` while deleting keys
 
-
-
 ```bash
 docker-compose -f docker-compose.redis.yml up
+python 4-redis.py
 ```
 
 Docs:
@@ -449,9 +464,8 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 
 </details>
 
-
-
 ### 5. Weaviate
+
 ```bash
 docker-compose -f docker-compose.weaviate.yml up weaviate
 ```
@@ -481,6 +495,7 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248320579529
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162702322006226
 ```
+
 </details>
 
 <details>
@@ -498,13 +513,15 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.8700212836265564
 Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.8700212836265564
 ```
+
 </details>
 
-
 ### 6. Elastic
+
 - ✅ Has very nice kibana UI, highlighting indexes and properties used
 - 🟡 Custom license, had to use `basic` for testing
 - ❌ Has strict security `fatal exception while booting Elasticsearch: cannot read configured PEM certificate_authorities`, had to disable SSL and other security checks
+
 ```bash
 docker-compose -f docker-compose.elastic.yml up
 ```
@@ -517,7 +534,6 @@ kibana --"render ui"--> elasticsearch
 ```
 
 <img width="1698" alt="Screenshot 2024-08-22 at 22 57 10" src="https://github.com/user-attachments/assets/d4c3a883-9acb-4ff4-b31c-bc9b5e5e5c1e">
-
 
 <details>
 <summary>Elastic similarity results on 21k dataset</summary>
@@ -535,6 +551,7 @@ Text: и гробы отверзлись; и многие тела усопши�
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.9080174
 
 ```
+
 </details>
 
 <details>
@@ -553,9 +570,11 @@ Text: щоб таким чином якось досягти воскресін�
 Text: Но Бог воскресил Его из мертвых.; Similarity: 0.9359567
 
 ```
+
 </details>
 
 ### 7. ChromaDB
+
 - ✅ Very straightforward quickstart guide
 - 🟡 API is confusing as it looks like column DB
 - ❌ Because of column API, one-by-one insertion speed is very slow. Likely could be improved though if multiple columns are first changed.
@@ -568,7 +587,6 @@ docker-compose -f docker-compose.chromadb.yml up
 ```
 
 <img width="600" alt="Screenshot 2024-08-22 at 13 17 23" src="https://github.com/user-attachments/assets/dc5daa48-4ff6-448c-aac7-3e3b3925c115">
-
 
 <details>
 <summary>ChromaDB similarity results on 21k dataset</summary>
@@ -585,6 +603,7 @@ Text: которою Он воздействовал во Христе, воск
 Text: и гробы отверзлись; и многие тела усопших святых воскресли; Similarity: 0.8217248320579529
 Text: быв погребены с Ним в крещении, в Нем вы и совоскресли верою в силу Бога, Который воскресил Его из мертвых,; Similarity: 0.8162698745727539
 ```
+
 </details>
 <details>
 <summary>ChromaDB similarity results on 1.4M dataset</summary>
@@ -601,17 +620,18 @@ Text: abych [tak] snad dospěl ke vzkříšení z mrtvých.; Similarity: 0.87002
 Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.8691048622131348
 Text: hogy így eljuthassak a halottak feltámadására.; Similarity: 0.8691048622131348
 ```
+
 </details>
 
-
 ### 8. Marqo
+
 - Comes with built-in models like `hf/e5-base-v2` and `open_clip/ViT-B-32/laion2b_s34b_b79k`
 - 🟡 No management UI, only API
 - 🟡 API and docs are confusing, emphasize built-in embedding models, was hard to inject **custom** embeddings, hard to create index with proper schema and use search. Had issues like:
-`marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': '[{"loc": ["__root__"], "msg": "Field \'custom\' has type \'custom_vector\' and must be a tensor field.`
-`marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': "Cannot specify 'tensorFields' when adding documents to a structured index. 'tensorFields' must be defined in structured index schema at index creation time",`
+  `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': '[{"loc": ["__root__"], "msg": "Field \'custom\' has type \'custom_vector\' and must be a tensor field.`
+  `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': "Cannot specify 'tensorFields' when adding documents to a structured index. 'tensorFields' must be defined in structured index schema at index creation time",`
 
-- ❌ does not support 1k batch, only 128, had to lower it but it impacts insert speed. `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': 'Number of docs in add documents request (1000) exceeds limit of 128. If using the Python client, break up your `add_documents` request into smaller batches using its `client_batch_size` parameter.`
+- ❌ does not support 1k batch, only 128, had to lower it but it impacts insert speed. `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': 'Number of docs in add documents request (1000) exceeds limit of 128. If using the Python client, break up your `add_documents`request into smaller batches using its`client_batch_size` parameter.`
   - I used CPU-based indexing. Docs and other guides say that GPU-based is faster
 - ❌ was unable to use docker volumes, got: `marqo.errors.MarqoWebError: MarqoWebError: MarqoWebError Error message: {'message': "Marqo cannot connect to Zookeeper`
 - ❌ with pure docker image, I couldn't go past 24k, I received errors like:
@@ -637,3 +657,4 @@ Text: Но скажет кто-нибудь: как воскреснут мер�
 ```
 
 </details>
+
