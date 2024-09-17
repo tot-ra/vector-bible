@@ -1,0 +1,12 @@
+bible.db
+.idea
+__pycache__
+elastic-data
+elastic-kibana-data
+chroma-data
+marqoai_data
+postgres_data
+qdrant_data
+redis
+volumes
+weaviate_data
