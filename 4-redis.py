@@ -17,7 +17,7 @@ from common import read_verses
 
 
 key_prefix = "verse"
-client = redis.Redis(host="localhost", port=6379, password="pass")
+client = redis.Redis(host="localhost", port=6379, password="pass", decode_responses=True)
 
 
 def create_redis_index(index_name):
