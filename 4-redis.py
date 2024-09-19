@@ -77,29 +77,31 @@ def redis_inserts(chunk, pipeline):
 
 
 def redis_search(embeddings, index_name):
-    query = (
-        Query("(*)=>[KNN 10 @embedding $query_vector AS vector_score]")
-        .sort_by("vector_score")
-        .paging(0, 10)
-        .return_fields("vector_score", "id", "text")
-        .dialect(4)
-    )
-
-    # range_query = (
-    #     Query(
-    #         "@embedding:[VECTOR_RANGE $range $query_vector]=>"
-    #         "{$YIELD_DISTANCE_AS: vector_score}"
-    #     )
+    # query = (
+    #     Query("(*)=>[KNN 10 @embedding $query_vector AS vector_score]")
     #     .sort_by("vector_score")
-    #     .return_fields("vector_score", "id", "text")
     #     .paging(0, 10)
-    #     .dialect(2)
+    #     .return_fields("vector_score", "id", "text")
+    #     .dialect(4)
     # )
+
+    query = (
+        Query(
+            "@embedding:[VECTOR_RANGE $range $query_vector]=>"
+            "{$YIELD_DISTANCE_AS: vector_score}"
+        )
+        .sort_by("vector_score")
+        .return_fields("vector_score", "id", "text")
+        .paging(0, 10)
+        .dialect(2)
+    )
 
     result_docs = (
         client.ft(index_name)
         .search(
-            query, {"query_vector": np.array(embeddings, dtype=np.float32).tobytes()}
+            query,
+            {"query_vector": np.array(embeddings, dtype=np.float32).tobytes()}
+            | ({"range": 0.55}),
         )
         .docs
     )
@@ -127,11 +129,11 @@ embeddings = model.encode("воскресил из мертвых")
 start_time = time.perf_counter()
 
 redis_search(embeddings, index_name)
-redis_search(embeddings, index_name)
-redis_search(embeddings, index_name)
-redis_search(embeddings, index_name)
-redis_search(embeddings, index_name)
+# redis_search(embeddings, index_name)
+# redis_search(embeddings, index_name)
+# redis_search(embeddings, index_name)
+# redis_search(embeddings, index_name)
 
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
-print(f"Search time: {elapsed_time/5} sec")
+print(f"Search time: {elapsed_time} sec")
