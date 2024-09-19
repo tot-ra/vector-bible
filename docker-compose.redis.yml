@@ -9,5 +9,5 @@ services:
       - REDIS_PASSWORD=pass
       - REDIS_ARGS=--requirepass pass
     volumes:
-      - ./redis/data/:/data
-      - ./redis/redis-stack.conf:/redis-stack.conf
+      - ./redis-data/data/:/data
+      - ./redis-data/redis-stack.conf:/redis-stack.conf

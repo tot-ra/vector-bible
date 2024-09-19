@@ -7,11 +7,11 @@ from pgvector.psycopg2 import register_vector
 from sentence_transformers import SentenceTransformer
 
 conn_params = {
-    'dbname': 'store',
-    'user': 'postgres',
-    'password': 'postgres',
-    'host': 'localhost',
-    'port': '5430'
+    "dbname": "store",
+    "user": "postgres",
+    "password": "postgres",
+    "host": "localhost",
+    "port": "5430",
 }
 
 # Connect to the PostgreSQL database
@@ -21,7 +21,9 @@ cur = postgres.cursor()
 cur.execute("SET search_path TO store, public")
 register_vector(cur)
 
-model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+model = SentenceTransformer(
+    "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+)
 
 
 # Function to fetch Bible text from the SQLite database and split it into sentences
@@ -33,13 +35,13 @@ def generate_embeddings():
     try:
         while True:
             # Query to select text from Chapter with LIMIT and OFFSET
-            query = f'''
+            query = f"""
             SELECT text, translationId, bookId, chapterNumber, Number
             FROM store."ChapterVerse"
-            WHERE embedding IS NULL
+            WHERE embedding IS NULL  AND translationId = 'rus_syn'
             ORDER BY chapterNumber, number
             LIMIT {batch_size} OFFSET {offset}
-            '''
+            """
 
             # AND translationId = 'rus_syn'
 
@@ -55,15 +57,17 @@ def generate_embeddings():
                 text = row[0]
                 # print(text)
                 embeddings = model.encode(text)
-                cur.execute(f'''
+                cur.execute(
+                    f"""
                     UPDATE store."ChapterVerse"
                     SET embedding = %s
                     WHERE translationId = %s AND bookId = %s AND chapterNumber = %s AND Number = %s
-                    ''', (embeddings, row[1], row[2], row[3], row[4]))
+                    """,
+                    (embeddings, row[1], row[2], row[3], row[4]),
+                )
 
                 # Commit the transaction
                 postgres.commit()
-
 
             # Increment the offset for the next batch
             offset += batch_size
@@ -79,17 +83,22 @@ def generate_embeddings():
         # Close the database connection
         postgres.close()
 
+
 def pgvector_search(embedding):
-    cur.execute(f'''
+    cur.execute(
+        f"""
         SELECT text,  1 - (embedding <=> %s::store.vector) AS similarity
         FROM store."ChapterVerse"
         WHERE embedding IS NOT NULL
         ORDER BY similarity desc
         LIMIT 10;
-    ''', (embedding,))
+    """,
+        (embedding,),
+    )
     for r in cur.fetchall():
         # print(r)
         print(f"Text: {r[0]}; Similarity: {r[1]}")
+
 
 generate_embeddings()
 
@@ -106,3 +115,4 @@ pgvector_search(embedding)
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
 print(f"Search time: {elapsed_time/5} sec")
+

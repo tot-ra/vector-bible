@@ -40,7 +40,9 @@ def create_redis_index(index_name):
                 },
             ),
         )
-        definition = IndexDefinition(prefix=[f"{key_prefix}:"], index_type=IndexType.HASH)
+        definition = IndexDefinition(
+            prefix=[f"{key_prefix}:"], index_type=IndexType.HASH
+        )
         client.ft(index_name).create_index(fields=schema, definition=definition)
 
 
@@ -51,7 +53,7 @@ def redis_inserts(chunk, pipeline):
 
         # Convert embedding from ndarray to byte string
         if isinstance(embedding, (np.ndarray, list)):
-            embedding = np.array(embeddings, dtype=np.float32).tobytes()
+            embedding = np.array(embedding, dtype=np.float32).tobytes()
 
         if not isinstance(meta, str):
             meta = json.dumps(meta)
@@ -62,7 +64,8 @@ def redis_inserts(chunk, pipeline):
                 "text": text,
                 "meta": meta,
                 "embedding": embedding,
-        })
+            },
+        )
 
     start_time = time.perf_counter()
     pipeline.execute()
@@ -96,8 +99,7 @@ def redis_search(embeddings, index_name):
     result_docs = (
         client.ft(index_name)
         .search(
-            query,
-            {"query_vector": np.array(embeddings, dtype=np.float32).tobytes()}
+            query, {"query_vector": np.array(embeddings, dtype=np.float32).tobytes()}
         )
         .docs
     )
@@ -108,17 +110,18 @@ def redis_search(embeddings, index_name):
         print(f"Text: {doc.text}; Similarity: {vector_score}")
 
 
-
 # Create Index
 index_name = "idx:verse_vss12"
-create_redis_index(index_name)
+# create_redis_index(index_name)
 
 # Ingest Data
-with client.pipeline(transaction=False) as pipeline:
-    read_verses(redis_inserts, max_items=1400000, minibatch_size=1000, pipeline=pipeline)
+# with client.pipeline(transaction=False) as pipeline:
+# read_verses(redis_inserts, max_items=24000, minibatch_size=1000, pipeline=pipeline)
 
 # Run queries
-model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+model = SentenceTransformer(
+    "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+)
 embeddings = model.encode("воскресил из мертвых")
 
 start_time = time.perf_counter()
