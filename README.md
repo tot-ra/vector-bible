@@ -424,6 +424,8 @@ Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在�
 ### 4. Redis
 
 - ✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
+  - Open UI at `http://localhost:8001/`, use `pass` as password
+  - Use bulk actions to clean up data if needed
 - 🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
   `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
 - 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
@@ -657,4 +659,3 @@ Text: Но скажет кто-нибудь: как воскреснут мер�
 ```
 
 </details>
-
