@@ -117,8 +117,10 @@ index_name = "idx:verse_vss12"
 create_redis_index(index_name)
 
 # Ingest Data
-# with client.pipeline(transaction=False) as pipeline:
-#     read_verses(redis_inserts, max_items=24000, minibatch_size=1000, pipeline=pipeline)
+with client.pipeline(transaction=False) as pipeline:
+    read_verses(
+        redis_inserts, max_items=1400000, minibatch_size=1000, pipeline=pipeline
+    )
 
 # Run queries
 model = SentenceTransformer(

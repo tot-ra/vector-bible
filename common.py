@@ -1,7 +1,7 @@
-import sqlite3
 from sentence_transformers import SentenceTransformer
 import psycopg2
 from pgvector.psycopg2 import register_vector
+import time
 
 model = SentenceTransformer(
     "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
@@ -15,11 +15,12 @@ conn_params = {
     "port": "5430",
 }
 
+postgres = psycopg2.connect(**conn_params)
+
 
 # Function to fetch Bible text from the SQLite database and split it into sentences
 def read_verses(handler, max_items=24000, minibatch_size=100, **kwargs):
     # Connect to the PostgreSQL database
-    postgres = psycopg2.connect(**conn_params)
     cur = postgres.cursor()
 
     cur.execute("SET search_path TO store, public")
@@ -44,10 +45,13 @@ def read_verses(handler, max_items=24000, minibatch_size=100, **kwargs):
         query = f"""
         SELECT text, translationId, bookId, chapterNumber, Number, embedding
         FROM store."ChapterVerse"
-        WHERE embedding IS NOT NULL AND translationId = 'rus_syn'
-        ORDER BY chapterNumber, number
+        WHERE embedding IS NOT NULL
         LIMIT {batch_size} OFFSET {offset}
         """
+
+        # ORDER BY chapterNumber, number
+
+        start_time = time.perf_counter()
 
         # Execute the query and fetch results
         cur.execute(query)
@@ -69,6 +73,8 @@ def read_verses(handler, max_items=24000, minibatch_size=100, **kwargs):
             }
             embedding = row[5]
             preprocessedRows.append((id, text, meta, embedding))
+
+        print(f"DB Query time: {time.perf_counter() - start_time} sec")
 
         for i in range(0, len(preprocessedRows), minibatch_size):
             chunk = preprocessedRows[i : i + minibatch_size]
