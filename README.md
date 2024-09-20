@@ -104,7 +104,7 @@ python 0-generate-embeddings.py
 ### 1. Postgres + pgvector
 
 - ✅ Data is stored in Postgres, so no need to sync data between databases
-- 🟡 No specialized UI, but you can reuse postgres-specific ones
+- 🟡 No specialized UI, but you can reuse postgres-specific ones. I relied on Jetbrains built-in DB plugin, VSCode DB plugin or neovim plugin
 - 🟡 Mediocre search on small dataset
 - 🟡 Operators are not the most intuitive
 - 🟡 Limited activity / community
