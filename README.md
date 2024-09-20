@@ -425,9 +425,13 @@ Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在�
 
 ### 4. Redis
 
+- ✅ Fastest search. But its KNN based, so not that precise.
 - ✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
   - Open UI at `http://localhost:8001/`, use `pass` as password
   - Use bulk actions to clean up data if needed
+- ✅ Insertion batching using `pipeline`
+- 🟡 Single CPU bound seems like a bottleneck for inserts
+- 🟡 High RAM usage
 - 🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
   `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
 - 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
@@ -603,7 +607,7 @@ Text: যীশু খ্রীষ্টকে স্মরণ করো, যি
 docker-compose -f docker-compose.weaviate.yml up weaviate
 ````
 
-- ✅ Fastest search
+- ✅ Fast search
 - ✅ Lots of docs, Multitenancy, Replication
 - 🟡 But Docs are confusing, emphasize cloud or older client versions, emphasizes OpenAI embeddings and configs instead of custom ones
 - 🟡 API at times confusing - `Failed to send 20 objects in a batch of 20. Please inspect client.batch.failed_objects or collection.batch.failed_objects for the failed objects` instead of showing errors.
