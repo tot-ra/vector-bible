@@ -1,4 +1,4 @@
-## Vector DBs comparison sandbox on a Biblical multilingual 10M verses
+## Vector DBs comparison sandbox on a Biblical multilingual verses
 
 Goal of this repo is to compare different vector databases in terms of performance, load,
 ease of use and features.
@@ -9,16 +9,18 @@ https://github.com/user-attachments/assets/a622727e-deb7-4b55-95e2-0642bd6f4763
 
 ## Candidates & Results
 
-| Nr  | Engine                                                                 | Ports                                                                           | UI  | Stability | Precision at 1.4M dataset (>0.9) | Insert speed<br>(avg on 1k batch) | Search 21k rows      | Search ~1.4M rows                                                                       | Storage (1.4M embeddings) | RAM        | Ease of integration 🤯 |
-| --- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | --- | --------- | -------------------------------- | --------------------------------- | -------------------- | --------------------------------------------------------------------------------------- | ------------------------- | ---------- | ---------------------- |
-| 2   | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢  | 🟢        | 8/10                             | 🟢 0.129 sec => 0.4 sec           | 🟢 0.008 sec         | 🟢 0.031 sec                                                                            | 🟢 4.8 GB                 | 🟢 4.73 GB | ★★★★☆                  |
-| 5   | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴  | 🟢        | 4/10                             | 🟡 0.411 sec => 2 sec             | 🟢 0.006 sec         | 🟢 0.010 sec                                                                            | 🟢 8.41 GB                | 🟡8.16 GB  | ★★★☆☆                  |
-| 6   | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢  | 🟢        | 10/10                            | 🔴 2.917 sec                      | 🟢 0.008 sec         | 🟡 0.20 sec -> 🟢0.011                                                                  | 🔴 23.46 GB               | 5.1 GB     | ★★★☆☆                  |
-| 7   | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴  | 🟢        | 4/10                             | 🔴 1.21 sec => 4 sec              | 🟢 0.018 sec         | 🟡 1.26 sec -> 🟢0.022 sec                                                              | 🟡 12.37 GB               | 🟢4.86 GB  | ★★★★☆                  |
-| 3   | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢  | 🟡        | 0/10                             | 🟢 0.118 sec => 0.4 sec           | 🔴 0.234 sec         | 🟡 0.358 sec                                                                            | 🔴 15 GB                  | 🟢4.59 GB  | ★★★☆☆                  |
-| 4   | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢  | 🟢        | 3/10                             | 🔴 6.482 sec                      | 🟢 0.002 sec         | 🟢 0.003 sec (1.1M dataset, knn)                                                        | 🟢 3.93 GB                | 🟡 8.3 GB  | ★★☆☆☆                  |
-| 1   | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡  | 🟢        | 5/10                             | --                                | 🟡 0.069 sec         | 🔴 6.39 (L1)<br /> 🔴 5.92 (L2)<br /> 🔴 6.608 sec (COS)<br /> 🔴 22.566 sec (no index) | 🟡 11.2 GB \*             | 63 MB      | ★★☆☆☆                  |
-| 8   | [Marqo 2.11](https://github.com/marqo-ai/marqo)                        | 8882                                                                            | 🔴  | -         | N/A                              | 🔴 4.14 sec                       | 🟡 0.19 -> 0.030 sec | N/A                                                                                     | N/A                       | 🟢 5 GB    | ★★☆☆☆                  |
+Results are for 1.4M rows dataset if not specified otherwise.
+
+| Nr  | Engine                                                                 | Ports                                                                           | UI  | Stability | Precision (>=0.9 recall) | Insert speed<br>(avg on 1k batch) | Search (21k rows)    | Search                                                                                  | HDD           | RAM        | Ease of integration 🤯 |
+| --- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | --- | --------- | ------------------------ | --------------------------------- | -------------------- | --------------------------------------------------------------------------------------- | ------------- | ---------- | ---------------------- |
+| 2   | [Qdrant 1.11.0](https://github.com/qdrant/qdrant)                      | 6334 [6333](http://localhost:6333/dashboard#/collections)                       | 🟢  | 🟢        | 🟢 8/10                  | 🟢 0.129 sec => 0.4 sec           | 🟢 0.008 sec         | 🟢 0.031 sec                                                                            | 🟢 4.8 GB     | 🟢 4.73 GB | ★★★★☆                  |
+| 5   | [Weaviate 1.24.22](https://github.com/weaviate/weaviate)               | [8080](http://localhost:8080/v1/schema/Collection_768?_with_meta_count=1) 50051 | 🔴  | 🟢        | 🟡 4/10                  | 🟡 0.411 sec => 2 sec             | 🟢 0.006 sec         | 🟢 0.010 sec                                                                            | 🟢 8.41 GB    | 🟡 8.16 GB | ★★★☆☆                  |
+| 6   | [Elastic 8.15](https://github.com/elastic/elasticsearch)               | [5601](http://localhost:5601/app/home#/) 9200                                   | 🟢  | 🟢        | 🟢 10/10                 | 🔴 2.917 sec                      | 🟢 0.008 sec         | 🟡 0.20 sec -> 🟢0.011                                                                  | 🔴 23.46 GB   | 🟢 5.1 GB  | ★★★☆☆                  |
+| 7   | [ChromaDB 0.5.5](https://github.com/chroma-core/chroma)                | 8000                                                                            | 🔴  | 🟢        | 🟡 4/10                  | 🔴 1.21 sec => 4 sec              | 🟢 0.018 sec         | 🟡 1.26 sec -> 🟢0.022 sec                                                              | 🟡 12.37 GB   | 🟢 4.86 GB | ★★★★☆                  |
+| 3   | [Milvus 2.4.8](https://github.com/milvus-io/milvus)                    | 9091 19530 [8000](http://localhost:8000)                                        | 🟢  | 🟡        | 🔴 0/10                  | 🟢 0.118 sec => 0.4 sec           | 🔴 0.234 sec         | 🟡 0.358 sec                                                                            | 🔴 15 GB      | 🟢 4.59 GB | ★★★☆☆                  |
+| 4   | [Redis stack 7.4](https://github.com/redis/redis)                      | 6379 [8001](http://localhost:8001/)                                             | 🟢  | 🟡        | 🟡 3/10                  | 🔴 0.8 => 7 (avg 6.482 sec)       | 🟢 0.002 sec         | 🟢 0.003 sec (1.1M dataset, knn), 🟡 0.04 sec (range)                                   | 🟢 6 GB       | 🔴 10.5 GB | ★★★☆☆                  |
+| 1   | Postgres 16.4 + [pgvector 0.7.4](https://github.com/pgvector/pgvector) | 5432                                                                            | 🟡  | 🟢        | 🟡 5/10                  | --                                | 🟡 0.069 sec         | 🔴 6.39 (L1)<br /> 🔴 5.92 (L2)<br /> 🔴 6.608 sec (COS)<br /> 🔴 22.566 sec (no index) | 🟡 11.2 GB \* | 63 MB      | ★★☆☆☆                  |
+| 8   | [Marqo 2.11](https://github.com/marqo-ai/marqo)                        | 8882                                                                            | 🔴  | -         | N/A                      | 🔴 4.14 sec                       | 🟡 0.19 -> 0.030 sec | N/A                                                                                     | N/A           | 🟢 5 GB    | ★★☆☆☆                  |
 
 I don't take into account cloud-only solutions like
 [Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/), [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
@@ -426,21 +428,109 @@ Text: 死而复生所展现的惊人能力。上帝在天上将基督安置在�
 - ✅ As we use redis-stack, it came with redis-insight UI bundled. UI is nice, but not vector-specific. Can't see indexes or visualize embeddings.
   - Open UI at `http://localhost:8001/`, use `pass` as password
   - Use bulk actions to clean up data if needed
-- ✅ Insertion - HSET should be faster than JSON.SET
-- ✅ Has KNN and Range queries search. KNN is faster.
 - 🟡 API/Command syntax was not intuitive, had to spend too much time reverse-engineering it from docs and examples.
   `redis.exceptions.ResponseError: Property vector_score not loaded nor in schema` while trying to search - index and query need to match
 - 🟡 `unknown command 'JSON.SET'` while using `redis` image, likely related to JSON extension, had to switch to `redis-stack` image.
 - 🟡 custom license
 - 🟡 docs are confusing
 - 🟡 `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk` while deleting keys
-- ❌ slow insert speed, gets worse as amount of data grows 1.3 sec -> 4 sec. Maybe it has to do with the way embeddings are passed?
+- ❌ slow insert speed, gets worse as amount of data grows 1.3 sec -> 7 sec per minibatch (1k rows). Maybe it has to do with the way embeddings are passed?
+- note that JSON -> HSET switch and pipeline fix did not improve the speed much
+- CPU on redis side was 100% loaded as observed from docker
 - ❌ On first Redis failed to ingest all rows (maybe I did some misconfiguration?).
   `redis.exceptions.BusyLoadingError: Redis is loading the dataset in memory` random error while loading dataset at 336K rows and 8.6GB of memory;
-  - ❌ Second attempt - failed with `SERVER_CLOSED_CONNECTION_ERROR` in pipeline.execute(). UI cannot connect to server anymore even if it looks running
-  - ✅ Third attempt (after switching from JSON to HSET and re-using pipeline feature) - succeeded with 1M rows. Insert speeds at times reached 10 sec per 1k rows.
-    - I did experience weird disconnects while inserting after 1M rows, effectively ending insertion
+- ❌ Second attempt - failed with `SERVER_CLOSED_CONNECTION_ERROR` in pipeline.execute(). UI cannot connect to server anymore even if it looks running
 - ❌ Search was slow, even though it used an index (maybe I did something wrong?)
+
+Improvements and third attempt:
+
+- ✅ Storage: JSON.set was changed -> HSET
+- Insertion: Reusing pipeline to insert data
+- ✅ Search: Range query was changed -> KNN.
+- ✅ New attempt- succeeded with 1M rows. Insert speeds at times reached 10 sec per 1k rows (bad).
+- 🟡 I also did experience > 5 insert disruptions while inserting after 1M rows, effectively breaking insertion, but there were no error logs or exceptions that would explain why.
+  The script just ended insertion but still performed search (both operations are in the same script). Likely related to something with my script or setup again. Maybe missing error catching or pipeline handling.
+  After encountering this, I adjusted offset to continue insertion from position that was left off.
+- ❌ Failed at 1.33M rows, likely due to memory limits
+
+<details>
+<summary>Logs</summary>
+
+docker logs before failure:
+
+```bash
+
+```
+
+redis-1 | 498:C 20 Sep 2024 09:51:56.499 _ DB saved on disk
+redis-1 | 498:C 20 Sep 2024 09:51:56.641 _ Fork CoW for RDB: current 1108 MB, peak 1108 MB, average 609 MB
+redis-1 | 9:M 20 Sep 2024 09:51:56.935 _ Background saving terminated with success
+redis-1 | 9:M 20 Sep 2024 09:52:57.046 _ 10000 changes in 60 seconds. Saving...
+redis-1 | 9:M 20 Sep 2024 09:52:57.136 \* Background saving started by pid 501
+redis-1 | 9:M 20 Sep 2024 09:53:43.928 # Can't fork for module: File exists
+redis-1 | 9:M 20 Sep 2024 09:53:43.928 # <module> fork failed - got errno 17, aborting fork GC
+redis-1 | 9:M 20 Sep 2024 09:53:55.054 # Can't fork for module: File exists
+redis-1 | 9:M 20 Sep 2024 09:53:55.055 # <module> fork failed - got errno 17, aborting fork GC
+redis-1 | 9:M 20 Sep 2024 09:54:07.963 # Can't fork for module: File exists
+redis-1 | 9:M 20 Sep 2024 09:54:07.963 # <module> fork failed - got errno 17, aborting fork GC
+redis-1 | Killed
+redis-1 | 501:signal-handler (1726826059) Received SIGTERM scheduling shutdown...
+redis-1 exited with code 0
+
+````
+
+python client failures:
+```python
+Traceback (most recent call last):
+  File "/Users/artjom/git/vector-dbs-comparison/4-redis.py", line 121, in <module>
+    read_verses(
+  File "/Users/artjom/git/vector-dbs-comparison/common.py", line 83, in read_verses
+    elapsed_time += handler(chunk, pipeline)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/artjom/git/vector-dbs-comparison/4-redis.py", line 71, in redis_inserts
+    pipeline.execute()
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/client.py", line 1503, in execute
+    return conn.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/retry.py", line 65, in call_with_retry
+    fail(error)
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/client.py", line 1505, in <lambda>
+    lambda error: self._disconnect_raise_reset(conn, error),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/client.py", line 1481, in _disconnect_raise_reset
+    raise error
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/retry.py", line 62, in call_with_retry
+    return do()
+           ^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/client.py", line 1504, in <lambda>
+    lambda: execute(conn, stack, raise_on_error),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/client.py", line 1412, in _execute_pipeline
+    response.append(self.parse_response(connection, args[0], **options))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/client.py", line 1435, in parse_response
+    result = Redis.parse_response(self, connection, command_name, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/client.py", line 565, in parse_response
+    response = connection.read_response()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/connection.py", line 512, in read_response
+    response = self._parser.read_response(disable_decoding=disable_decoding)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/_parsers/resp2.py", line 15, in read_response
+    result = self._read_response(disable_decoding=disable_decoding)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/_parsers/resp2.py", line 25, in _read_response
+    raw = self._buffer.readline()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/_parsers/socket.py", line 115, in readline
+    self._read_from_socket()
+  File "/opt/homebrew/lib/python3.11/site-packages/redis/_parsers/socket.py", line 68, in _read_from_socket
+    raise ConnectionError(SERVER_CLOSED_CONNECTION_ERROR)
+redis.exceptions.ConnectionError: Connection closed by server.
+````
+
+</details>
 
 ```bash
 docker-compose -f docker-compose.redis.yml up
@@ -502,6 +592,7 @@ Text: а Начальника жизни убили. Сего Бог воскр�
 Text: if any way I arrive at the resurrection from among [the] dead.; Similarity: 0.86
 Text: येन केनचित् प्रकारेण मृतानां पुनरुत्थितिं प्राप्तुं यते।; Similarity: 0.86
 Text: যীশু খ্রীষ্টকে স্মরণ করো, যিনি মৃতলোক থেকে পুনরুত্থিত হয়েছেন এবং যিনি দাউদের বংশজাত। এই হল আমার সুসমাচার।; Similarity: 0.83
+
 </details>
 
 ### 5. Weaviate
