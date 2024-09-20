@@ -31,6 +31,8 @@ I did not have time/energy to also test:
 [Clickhouse](https://github.com/ClickHouse/ClickHouse),
 [Cassandra](https://github.com/apache/cassandra)
 
+See also benchmarks published by each engine (mostly saying they are the best) - [Qdrant](https://qdrant.tech/benchmarks/), [Milvus](https://zilliz.com/vector-database-benchmark-tool?database=Milvus%2CPgVector%2CPinecone&dataset=medium&filter=none%2Clow%2Chigh&tab=3), [Redis](https://redis.io/blog/benchmarking-results-for-vector-databases/)
+
 ### Testing Approach
 
 Used:
