@@ -451,7 +451,7 @@ Improvements and third attempt:
 - 🟡 I also did experience > 5 insert disruptions while inserting after 1M rows, effectively breaking insertion, but there were no error logs or exceptions that would explain why.
   The script just ended insertion but still performed search (both operations are in the same script). Likely related to something with my script or setup again. Maybe missing error catching or pipeline handling.
   After encountering this, I adjusted offset to continue insertion from position that was left off.
-- ❌ Failed at 1.33M rows, likely due to memory limits
+- ❌ Failed at 1.33M rows, likely due to memory limits (see logs below). After restarting, I couldn't connect to the server again.
 
 <details>
 <summary>Logs</summary>
@@ -459,9 +459,6 @@ Improvements and third attempt:
 docker logs before failure:
 
 ```bash
-
-```
-
 redis-1 | 498:C 20 Sep 2024 09:51:56.499 _ DB saved on disk
 redis-1 | 498:C 20 Sep 2024 09:51:56.641 _ Fork CoW for RDB: current 1108 MB, peak 1108 MB, average 609 MB
 redis-1 | 9:M 20 Sep 2024 09:51:56.935 _ Background saving terminated with success
@@ -476,8 +473,7 @@ redis-1 | 9:M 20 Sep 2024 09:54:07.963 # <module> fork failed - got errno 17, ab
 redis-1 | Killed
 redis-1 | 501:signal-handler (1726826059) Received SIGTERM scheduling shutdown...
 redis-1 exited with code 0
-
-````
+```
 
 python client failures:
 ```python
@@ -528,7 +524,7 @@ Traceback (most recent call last):
   File "/opt/homebrew/lib/python3.11/site-packages/redis/_parsers/socket.py", line 68, in _read_from_socket
     raise ConnectionError(SERVER_CLOSED_CONNECTION_ERROR)
 redis.exceptions.ConnectionError: Connection closed by server.
-````
+```
 
 </details>
 
@@ -540,13 +536,12 @@ python 4-redis.py
 Docs:
 https://redis-py.readthedocs.io/en/stable/examples/search_vector_similarity_examples.html
 
-- <img width="600" alt="Screenshot 2024-08-21 at 16 19 02" src="https://github.com/user-attachments/assets/1c1c97c6-aba4-4282-bf06-f9e6dcdcd85e">
+<img width="600" alt="Screenshot 2024-08-21 at 16 19 02" src="https://github.com/user-attachments/assets/1c1c97c6-aba4-4282-bf06-f9e6dcdcd85e">
 
 <details>
 <summary>Redis similarity results on 21k dataset with KNN query 0.002 sec</summary>
-```
-</details>
 
+```
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.92
 Text: а Начальника жизни убили. Сего Бог воскресил из мертвых, чему мы свидетели.; Similarity: 0.87
 Text: которою Он воздействовал во Христе, воскресив Его из мертвых и посадив одесную Себя на небесах,; Similarity: 0.83
@@ -557,6 +552,7 @@ Text: и воскресил с Ним, и посадил на небесах в�
 Text: Который предан за грехи наши и воскрес для оправдания нашего.; Similarity: 0.77
 Text: Благословен Бог и Отец Господа нашего Иисуса Христа, по великой Своей милости возродивший нас воскресением Иисуса Христа из мертвых к упованию живому,; Similarity: 0.76
 Text: умершего за нас, чтобы мы бодрствуем ли, или спим, жили вместе с Ним.; Similarity: 0.75
+```
 
 </details>
 
@@ -578,10 +574,14 @@ Text: быв погребены с Ним в крещении, в Нем вы и
 
 </details>
 
-<details>
-<summary>Redis similarity results on 1.1M dataset with KNN query</summary>
 
-````
+
+<img width="1656" alt="Screenshot 2024-09-20 at 12 54 29" src="https://github.com/user-attachments/assets/4a36d308-89da-41f2-b88c-2f3d6a707263">
+
+<details>
+<summary>Redis similarity results on 1.1/1.3M dataset with KNN query</summary>
+
+```
 Text: a fin de llegar a la resurrección de entre los muertos.; Similarity: 0.94
 Text: чтобы достигнуть воскресения мертвых.; Similarity: 0.92
 Text: щоб таким чином якось досягти воскресіння з мертвих.; Similarity: 0.9
@@ -592,8 +592,10 @@ Text: а Начальника жизни убили. Сего Бог воскр�
 Text: if any way I arrive at the resurrection from among [the] dead.; Similarity: 0.86
 Text: येन केनचित् प्रकारेण मृतानां पुनरुत्थितिं प्राप्तुं यते।; Similarity: 0.86
 Text: যীশু খ্রীষ্টকে স্মরণ করো, যিনি মৃতলোক থেকে পুনরুত্থিত হয়েছেন এবং যিনি দাউদের বংশজাত। এই হল আমার সুসমাচার।; Similarity: 0.83
-
+```
 </details>
+
+
 
 ### 5. Weaviate
 
