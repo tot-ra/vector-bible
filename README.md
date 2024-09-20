@@ -451,7 +451,7 @@ Improvements and third attempt:
 - 🟡 I also did experience > 5 insert disruptions while inserting after 1M rows, effectively breaking insertion, but there were no error logs or exceptions that would explain why.
   The script just ended insertion but still performed search (both operations are in the same script). Likely related to something with my script or setup again. Maybe missing error catching or pipeline handling.
   After encountering this, I adjusted offset to continue insertion from position that was left off.
-- ❌ Failed at 1.33M rows, likely due to memory limits (see logs below). After restarting, I couldn't connect to the server again.
+- ❌ Failed at 1.33M rows, likely due to memory limits (see logs below). After restarting, I couldn't connect to the server again even after restarting container.
 
 <details>
 <summary>Logs</summary>
