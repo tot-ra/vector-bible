@@ -23,7 +23,7 @@ Results are for 1.4M rows dataset if not specified otherwise.
 | 8   | [Marqo 2.11](https://github.com/marqo-ai/marqo)                        | 8882                                                                            | 🔴  | -         | N/A                      | 🔴 4.14 sec                       | 🟡 0.19 -> 0.030 sec | N/A                                                                                     | N/A           | 🟢 5 GB    | ★★☆☆☆                  |
 
 I don't take into account cloud-only solutions like
-[Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/), [Rockset](https://docs.rockset.com/documentation/docs/vector-search)
+[Pinecone](https://docs.pinecone.io/guides/get-started/quickstart), [MongoDB Atlas](https://www.mongodb.com/docs/atlas/getting-started/), [SingleStore](https://docs.singlestore.com/cloud/reference/sql-reference/vector-functions/vector-indexing/), [Rockset](https://docs.rockset.com/documentation/docs/vector-search). Maybe [https://benchmark.vectorview.ai](https://benchmark.vectorview.ai/vectordbs.html) helps
 
 I did not have time/energy to also test:
 [Vespa](https://github.com/vespa-engine/vespa),
